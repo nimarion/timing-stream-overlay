@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    max-width: max-content;
+    width: 100%;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: row;
+    place-items: start;
+    overflow: hidden;
+}
+
+#root {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 100vh;
+    place-items: end;
+}
+
+.cssanimation, .cssanimation span {
+    animation-duration: 800ms;
+    animation-fill-mode: both;
+}
+
+.cssanimation span { display: inline-block }
+
+.fadeInBottom { animation-name: fadeInBottom }
+@keyframes fadeInBottom {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to { opacity: 1 }
+}
