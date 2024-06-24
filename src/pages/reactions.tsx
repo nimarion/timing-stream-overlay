@@ -11,6 +11,7 @@ type Result = {
   nation: string;
   result: string;
   time: string;
+  reactionTime: string | null;
 };
 
 export default function ResultsPage() {
@@ -31,7 +32,7 @@ export default function ResultsPage() {
     }
   }, [lastJsonMessage]);
 
- if (readyState === ReadyState.OPEN) {
+  if (readyState === ReadyState.OPEN) {
     return (
       <table className=" bg-white rounded-md table-fixed w-full ">
         <thead className="rounded-t-md collapse w-full">
@@ -39,7 +40,7 @@ export default function ResultsPage() {
             <th className="p-4 rounded-tl-md w-4">Rang</th>
             <th className="p-4 w-11">Nation</th>
             <th className="p-4 w-40">Name</th>
-            <th className="rounded-tr-md p-4">Ergebnis</th>
+            <th className="rounded-tr-md p-4">Reaktionszeit</th>
           </tr>
         </thead>
 
@@ -90,7 +91,7 @@ export default function ResultsPage() {
                       : "border-gray-300  border-collapse border-t-2"
                   } ${index === results.length - 1 ? "rounded-br-md" : ""}`}
                 >
-                  {result.time}
+                  {result.reactionTime}
                 </td>
               </tr>
             );

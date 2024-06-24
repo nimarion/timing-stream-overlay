@@ -4,11 +4,11 @@
 import { components, hooks, utils } from '@generouted/react-router/client'
 
 export type Path =
-  | `/`
+  | `/reactions`
   | `/results`
-  | `/results2`
   | `/startlist`
   | `/timing`
+  | `/upcoming`
 
 export type Params = {
   

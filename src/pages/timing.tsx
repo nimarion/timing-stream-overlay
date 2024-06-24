@@ -22,19 +22,8 @@ export default function TimingPage() {
       const time = lastJsonMessage.time;
       if (time === "0.0") {
         setWind(null);
-        setTime("0.0");
-      } else {
-        const amountOfDots = time.split(".").length - 1;
-        const amountOfColons = time.split(":").length - 1;
-        if (amountOfDots === 0 && amountOfColons === 2) {
-          return; // Daytime
-        }
-        //if (isNaN(Number(time))) {
-          setTime(time);
-        /*} else {
-          setTime((Math.round(Number(time) * 100) / 100).toFixed(2));
-        }*/
       }
+      setTime(time);
     }
   }, [lastJsonMessage]);
   if (readyState === ReadyState.OPEN) {
