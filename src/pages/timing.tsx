@@ -49,11 +49,5 @@ export default function TimingPage() {
       </div>
     );
   }
-  return (
-    <div className="w-screen flex flex-row gap-4 justify-end p-4">
-      <div className="bg-gray-100 flex w-auto	 p-4 rounded-md text-right text-4xl justify-center items-center">
-        <p className="time text-right w-full font-bold">Connecting...</p>
-      </div>
-    </div>
-  );
+  return null;
 }
