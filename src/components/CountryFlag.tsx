@@ -3,10 +3,10 @@ import Flag from "react-world-flags";
 
 export default function CountryFlag({
   nation,
-  height = "16",
+  height = 30,
 }: {
   nation: string;
-  height?: string;
+  height?: number;
 }) {
   const country = findCountry(nation);
   if(!country) {
@@ -16,6 +16,7 @@ export default function CountryFlag({
   return (
     <Flag
       height={height}
+      width={height}
       code={isoCountryCode}
       fallback={<span>{isoCountryCode}</span>}
     />

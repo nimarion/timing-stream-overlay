@@ -3,19 +3,19 @@ import CountryFlag from "./CountryFlag";
 
 export default function ResultsTable({ results }: { results: Result[] }) {
   return (
-    <table className=" bg-white rounded-md table-fixed w-full ">
-      <thead className="rounded-t-md collapse w-full">
-        <tr className="text-left">
-          <th className="p-4 rounded-tl-md w-4">Rang</th>
-          <th className="p-4 w-11">Nation</th>
-          <th className="p-4 w-40">Name</th>
-          <th className="rounded-tr-md p-4">Ergebnis</th>
-        </tr>
-      </thead>
+    <div className="h-screen flex flex-col justify-end w-[22%] text-2xl">
+      <table className="rounded-md table-fixed w-full">
+        <thead className="sticky top-0 collapse">
+          <tr className="text-left">
+            <th className="p-4 rounded-tl-md w-12">Rang</th>
+            <th className="p-4 w-16">Nation</th>
+            <th className="p-4 w-48">Name</th>
+            <th className="rounded-tr-md p-4 text-right">Ergebnis</th>
+          </tr>
+        </thead>
 
-      <tbody className="font-bold ">
-        {results.map((result, index) => {
-          return (
+        <tbody className="font-bold">
+          {results.map((result, index) => (
             <tr
               key={index}
               className={`bg-gray-100 ${
@@ -23,8 +23,8 @@ export default function ResultsTable({ results }: { results: Result[] }) {
               }`}
             >
               <td
-                className={`p-2 ${
-                  index === 0 ? "rounded-tl-md " : "border-gray-300 border-t-2"
+                className={`p-2 text-center ${
+                  index === 0 ? "rounded-tl-md" : "border-t-2 border-gray-300"
                 } ${index === results.length - 1 ? "rounded-bl-md" : ""}`}
               >
                 {result.rank}
@@ -45,17 +45,15 @@ export default function ResultsTable({ results }: { results: Result[] }) {
               </td>
               <td
                 className={`p-2 text-right ${
-                  index === 0
-                    ? "rounded-tr-md "
-                    : "border-gray-300  border-collapse border-t-2"
+                  index === 0 ? "rounded-tr-md" : "border-t-2 border-gray-300"
                 } ${index === results.length - 1 ? "rounded-br-md" : ""}`}
               >
                 {result.time}
               </td>
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

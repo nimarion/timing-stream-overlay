@@ -6,7 +6,7 @@ export type Result = {
     nation: string;
     result: string;
     time: string;
-    reactionTime: string | null;
+    reactionTime: number | null;
   };
 
   export type Startlist = {
