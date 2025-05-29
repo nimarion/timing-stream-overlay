@@ -2,6 +2,13 @@ import { Result } from "@/types";
 import CountryFlag from "./CountryFlag";
 
 export default function ResultsTable({ results }: { results: Result[] }) {
+  // if more than 8 results show first and then last 7 results
+  if (results.length > 8) {
+    const firstResult = results[0];
+    const lastResults = results.slice(-7);
+    results = [firstResult, ...lastResults];
+  }
+
   return (
     <div className="h-screen flex flex-col justify-end w-[22%] text-2xl">
       <table className="rounded-md table-fixed w-full">
