@@ -23,5 +23,7 @@ https://github.com/nimarion/timing-stream-overlay/assets/23435250/83324bde-4b6b-
 
 # Used in 
 
-- [30. Bauhaus Junioren Gala, Samstag 22.06.](https://www.youtube.com/watch?v=z4oo2WgVLyo)
-- [30. Bauhaus Junioren Gala, Sonntag 23.06.](https://www.youtube.com/watch?v=HHN-kfUnWc0)
+- [30. Bauhaus Junioren Gala, Samstag 22.06.2024](https://www.youtube.com/watch?v=z4oo2WgVLyo)
+- [30. Bauhaus Junioren Gala, Sonntag 23.06.2024](https://www.youtube.com/watch?v=HHN-kfUnWc0)
+- [9. Lange Laufnacht - Nachmittagsprogramm, Samstag 31.05.2025](https://www.youtube.com/watch?v=wCJi3mV3sCk)
+- [9. Lange Laufnacht - Abendprogramm, Samstag 31.05.2025](https://www.youtube.com/watch?v=NNHm30hNypc)
