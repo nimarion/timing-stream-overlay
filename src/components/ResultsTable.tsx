@@ -1,6 +1,20 @@
 import { Result } from "@/types";
 import CountryFlag from "./CountryFlag";
 
+function formatLastname(lastname: string): string {
+  if( lastname.length <= 15 ) {
+    return lastname.toUpperCase();
+  }
+  const splitted = lastname.split(" ");
+  if (splitted.length > 2) {
+    return splitted[splitted.length - 1].toUpperCase();
+  }
+  if( splitted.length === 2) {
+    return `${splitted[0].charAt(0).toUpperCase()}. ${splitted[1].toUpperCase()}`;
+  }
+  return splitted[0].toUpperCase();
+}
+
 export default function ResultsTable({ results }: { results: Result[] }) {
   // if more than 8 results show first and then last 7 results
   if (results.length > 8) {
@@ -10,13 +24,13 @@ export default function ResultsTable({ results }: { results: Result[] }) {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-end w-[22%] text-2xl">
+    <div className="h-screen flex flex-col justify-end w-[25%] text-2xl">
       <table className="rounded-md table-fixed w-full">
         <thead className="sticky top-0 collapse">
           <tr className="text-left">
             <th className="p-4 rounded-tl-md w-12">Rang</th>
-            <th className="p-4 w-16">Nation</th>
-            <th className="p-4 w-48">Name</th>
+            <th className="p-4 w-12">Nation</th>
+            <th className="p-4 w-56">Name</th>
             <th className="rounded-tr-md p-4 text-right">Ergebnis</th>
           </tr>
         </thead>
@@ -45,10 +59,10 @@ export default function ResultsTable({ results }: { results: Result[] }) {
               </td>
               <td
                 className={`p-2 ${
-                  index != 0 ? "border-gray-300 border-t-2" : ""
+                  index != 0 ? "border-gray-300 border-t-2  whitespace-nowrap " : ""
                 }`}
               >
-                {result.lastname.toUpperCase()}
+                {formatLastname(result.lastname)}
               </td>
               <td
                 className={`p-2 text-right ${
