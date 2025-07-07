@@ -37,7 +37,7 @@ export default function TimingPage() {
                 wind >= 2.5 ? "bg-red-500" : "bg-green-500"
               }  w-auto p-4 rounded-md font-bold text-5xl justify-center items-center flex flex-row gap-4`}
             >
-              <WindIcon className="w-auto h-full mt-2" />
+              <WindIcon className="w-8 h-8 mt-2" />
               <p>{wind}</p>
             </div>
           )}
