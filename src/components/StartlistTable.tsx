@@ -12,10 +12,10 @@ export default function StartlistTable({
         <caption className="p-2 font-bold text-left bg-gray-200 rounded-t-md">
           {startlist.title}
         </caption>
-        <thead className="collapse">
+        <thead className="sticky top-0 collapse">
           <tr className="text-left">
             <th className="p-4 w-12">Bahn</th>
-            <th className="p-4 w-16">Nation</th>
+            <th className="p-4 w-12">Nation</th>
             <th className="p-4 w-min">Name</th>
           </tr>
         </thead>

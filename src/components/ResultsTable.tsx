@@ -24,7 +24,7 @@ export default function ResultsTable({ results }: { results: Result[] }) {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-end w-[25%] text-2xl">
+    <div className="h-screen flex flex-col justify-end antialiased w-[22%] text-2xl">
       <table className="rounded-md table-fixed w-full">
         <thead className="sticky top-0 collapse">
           <tr className="text-left">

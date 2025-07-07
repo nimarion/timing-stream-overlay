@@ -9,17 +9,18 @@ export default function TimingPage() {
     shouldReconnect: () => true,
   });
   const [wind, setWind] = useState<number | null>(null);
-  const [time, setTime] = useState<string | null>(null);
+  const [time, setTime] = useState<string | null>("0.0");
   useEffect(() => {
     if (!lastJsonMessage) return;
-    const type = lastJsonMessage.type;
+    const message = lastJsonMessage as any;
+    const type = message.type;
     if (type === "wind") {
-      const wind = Number(lastJsonMessage.wind);
+      const wind = Number(message.wind);
       if (isNaN(wind)) return;
       setWind(Number(wind.toFixed(1)));
     }
     if (type === "runningTime") {
-      const time = lastJsonMessage.time;
+      const time = message.time;
       if (time === "0.0") {
         setWind(null);
       }
@@ -28,20 +29,20 @@ export default function TimingPage() {
   }, [lastJsonMessage]);
   if (readyState === ReadyState.OPEN) {
     return (
-      <div className="w-screen flex flex-row gap-4 justify-end p-4">
-        <div className="flex flex-row gap-4">
+      <div className="flex flex-row gap-4 justify-end mt-auto">
+        <div className="flex flex-row gap-4 h-20 w-auto">
           {wind && (
             <div
               className={`${
                 wind >= 2.5 ? "bg-red-500" : "bg-green-500"
-              }  w-auto p-4 rounded-md font-bold text-4xl justify-center items-center flex flex-row gap-4`}
+              }  w-auto p-4 rounded-md font-bold text-5xl justify-center items-center flex flex-row gap-4`}
             >
-              <WindIcon className="w-8 h-8" />
+              <WindIcon className="w-auto h-full mt-2" />
               <p>{wind}</p>
             </div>
           )}
           {time && (
-            <div className="bg-gray-100 flex w-auto	 p-4 rounded-md text-right text-4xl justify-center items-center">
+            <div className="bg-gray-100 flex w-auto	px-4 rounded-md text-right text-5xl justify-center items-center">
               <p className="time text-right w-full font-bold">{time}</p>
             </div>
           )}

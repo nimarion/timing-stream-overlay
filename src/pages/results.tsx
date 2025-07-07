@@ -12,9 +12,10 @@ export default function ResultsPage() {
   const [results, setResults] = useState<Result[]>([]);
   useEffect(() => {
     if (!lastJsonMessage) return;
-    const type = lastJsonMessage.type;
+    const message = lastJsonMessage as any;
+    const type = message.type;
     if (type === "results") {
-      setResults(lastJsonMessage.results);
+      setResults(message.results);
     } else if (type === "raceStarted") {
       setResults([]);
     }

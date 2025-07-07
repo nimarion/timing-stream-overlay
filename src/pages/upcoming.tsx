@@ -13,9 +13,10 @@ export default function ResultsPage() {
 
   useEffect(() => {
     if (!lastJsonMessage) return;
-    const type = lastJsonMessage.type;
+    const message = lastJsonMessage as any;
+    const type = message.type;
     if (type === "startlists") {
-      setStartlists(lastJsonMessage.startlists);
+      setStartlists(message.startlists);
     }
   }, [lastJsonMessage]);
 

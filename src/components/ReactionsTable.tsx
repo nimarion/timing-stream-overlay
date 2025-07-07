@@ -15,7 +15,7 @@ export default function ReactionsTable({ results }: { results: Result[] }) {
         </thead>
 
         <tbody className="font-bold ">
-          {results.map((result, index) => {
+          {results.filter(results => results.reactionTime).map((result, index) => {
             return (
               <tr
                 key={index}
@@ -60,7 +60,7 @@ export default function ReactionsTable({ results }: { results: Result[] }) {
                         className="h-5 transition-all duration-300"
                         style={{
                           width: `${Math.min(
-                            (result.reactionTime / 0.25) * 100,
+                            (result.reactionTime!! / 0.25) * 100,
                             100
                           )}%`,
                           background: "linear-gradient(to right, yellow, red)",
@@ -76,7 +76,7 @@ export default function ReactionsTable({ results }: { results: Result[] }) {
 
                     {/* Time Display */}
                     <span className="text-white text-sm font-bold">
-                      {result.reactionTime.toFixed(3)}
+                      {result.reactionTime!!.toFixed(3)}
                     </span>
                   </div>
                 </td>
