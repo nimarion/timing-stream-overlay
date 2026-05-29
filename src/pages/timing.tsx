@@ -73,7 +73,7 @@ export default function TimingPage() {
           {time && (
             <div
               className="bg-gray-100 flex px-4 transition-[width] duration-300 ease-in-out rounded-md text-right text-5xl justify-center items-center box-content"
-              style={{ width: `${Math.max(3, time.length)}ch` }}
+              style={{ width: `${Math.max(3, time.length + 0.5)}ch` }}
             >
               <p className="time text-right w-full font-bold tabular-nums">{time}</p>
             </div>
