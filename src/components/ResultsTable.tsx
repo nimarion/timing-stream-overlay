@@ -24,7 +24,7 @@ export default function ResultsTable({ results }: { results: Result[] }) {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-end antialiased w-[22%] text-2xl">
+    <div className="w-full h-full flex flex-col justify-end antialiased text-4xl">
       <table className="rounded-md table-fixed w-full">
         <thead className="sticky top-0 collapse">
           <tr className="text-left">
@@ -44,32 +44,40 @@ export default function ResultsTable({ results }: { results: Result[] }) {
               }`}
             >
               <td
-                className={`p-2 text-center ${
+                className={`p-0 text-center ${
                   index === 0 ? "rounded-tl-md" : "border-t-2 border-gray-300"
                 } ${index === results.length - 1 ? "rounded-bl-md" : ""}`}
               >
-                {result.rank}
+                <div className="px-2 py-2 overflow-hidden flex items-center justify-center h-full">
+                  {result.rank}
+                </div>
               </td>
               <td
-                className={`p-2 ${
+                className={`p-0 ${
                   index != 0 ? "border-gray-300 border-t-2" : ""
                 }`}
               >
-                <CountryFlag nation={result.nation} />
+                <div className="px-2 py-2 overflow-hidden flex items-center h-full">
+                  <CountryFlag nation={result.nation} />
+                </div>
               </td>
               <td
-                className={`p-2 ${
+                className={`p-0 ${
                   index != 0 ? "border-gray-300 border-t-2  whitespace-nowrap " : ""
                 }`}
               >
-                {formatLastname(result.lastname)}
+                <div className="px-2 py-2 overflow-hidden flex items-center h-full">
+                  {formatLastname(result.lastname)}
+                </div>
               </td>
               <td
-                className={`p-2 text-right ${
+                className={`p-0 text-right ${
                   index === 0 ? "rounded-tr-md" : "border-t-2 border-gray-300"
                 } ${index === results.length - 1 ? "rounded-br-md" : ""}`}
               >
-                {result.time}
+                <div className="px-2 py-2 overflow-hidden flex items-center justify-end h-full">
+                  {result.time}
+                </div>
               </td>
             </tr>
           ))}

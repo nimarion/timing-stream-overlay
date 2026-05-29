@@ -3,7 +3,7 @@ import CountryFlag from "./CountryFlag";
 
 export default function ReactionsTable({ results }: { results: Result[] }) {
   return (
-    <div className="h-screen flex flex-col justify-end w-[28%] text-2xl">
+    <div className="w-full h-full flex flex-col text-4xl">
       <table className="rounded-md table-fixed w-full">
         <thead className="rounded-t-md collapse w-full">
           <tr className="text-left">

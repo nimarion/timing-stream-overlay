@@ -1,7 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --rr2-accent: #dc2626;
+    --rr2-accent-glow: rgba(220, 38, 38, 0.35);
+    --rr2-panel-bg: rgba(0, 0, 0, 0.85);
+    --rr2-row-bg: linear-gradient(135deg, rgba(25,25,25,0.95), rgba(35,35,35,0.95));
+    --rr2-text-primary: #FFFFFF;
+    --rr2-text-secondary: #dddddd;
+    --rr2-text-muted: rgba(255, 255, 255, 0.4);
+    --rr2-row-border: rgba(255, 255, 255, 0.08);
+    --rr2-font-display: 'Roboto', Arial, sans-serif;
+    --rr2-font-mono: 'Consolas', 'Courier New', monospace;
+}
 
 * {
     overflow: hidden;
@@ -13,14 +27,12 @@
 }
 
 body {
-    max-width: max-content;
     width: 100%;
+    height: 100%;
     display: flex;
-    min-height: 100vh;
     flex-direction: row;
     place-items: start;
     overflow: hidden;
-    overflow-y: hidden;
 }
 
 body::-webkit-scrollbar {
@@ -31,7 +43,7 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: row;
     width: 100%;
-    min-height: 100vh;
+    height: 100%;
     place-items: end;
 }
 
@@ -42,13 +54,117 @@ body::-webkit-scrollbar {
 
 .cssanimation span { display: inline-block }
 
-.fadeInBottom { animation-name: fadeInBottom }
-@keyframes fadeInBottom {
+.fadeInBottom { animation-name: fadeInBottomRow }
+.fadeInBottom td > div { 
+    animation-name: fadeInBottomCellWrapper;
+    animation-duration: 800ms;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeInBottomRow {
+    from {
+        transform: translateY(20px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInBottomCellWrapper {
     from {
         opacity: 0;
-        transform: translateY(100%);
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
     }
     to {
         opacity: 1;
+        max-height: 80px; /* enough to contain the row */
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
     }
+}
+
+table > caption.bg-gray-200 {
+    background: var(--rr2-panel-bg) !important;
+    color: var(--rr2-accent) !important;
+    font-weight: 700 !important;
+    font-size: 1.05em;
+    padding: 12px 16px !important;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+}
+
+thead {
+    background: var(--rr2-panel-bg);
+}
+
+thead th {
+    color: var(--rr2-text-secondary) !important;
+    font-weight: 500 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.65em;
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+}
+
+/* Body rows — gradient row background, white text */
+tbody tr.bg-gray-100 {
+    background: var(--rr2-row-bg) !important;
+    color: var(--rr2-text-primary) !important;
+}
+
+/* Soft row separators */
+.border-gray-300,
+[class*="border-gray-300"] {
+    border-color: var(--rr2-row-border) !important;
+}
+
+/* Result / time column — right-aligned td in tbody → accent + mono */
+tbody td.text-right {
+    color: var(--rr2-accent) !important;
+    font-family: var(--rr2-font-mono) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+}
+
+/* Carve-out: ReactionsTable's right cell holds the reaction-bar div,
+   not a plain time string. Keep the bar's own visual. */
+tbody td.text-right > div.bg-black {
+    background: var(--rr2-panel-bg) !important;
+    color: var(--rr2-text-primary);
+}
+
+tbody td.text-right > div.bg-black > div.bg-neutral-800 {
+    background: rgba(0,0,0,0.6) !important;
+}
+
+/* ── RR2 skin: TimingPage (live time + wind, top-right) ─────── */
+
+/* Timer text */
+.time {
+    font-family: var(--rr2-font-mono) !important;
+    color: var(--rr2-text-primary) !important;
+    letter-spacing: 1px;
+}
+
+/* The timer's outer box shares bg-gray-100 with table rows.
+   Narrow to non-tr elements so this rule doesn't touch table rows. */
+div.bg-gray-100 {
+    background: var(--rr2-panel-bg) !important;
+    color: var(--rr2-text-primary) !important;
+}
+
+/* Wind: keep semantic green/red but tint to match RR2 contrast */
+.bg-green-500 {
+    background: rgba(34, 197, 94, 0.95) !important;
+    color: var(--rr2-text-primary) !important;
+}
+
+.bg-red-500 {
+    background: var(--rr2-accent) !important;
+    color: var(--rr2-text-primary) !important;
+    box-shadow: 0 4px 12px var(--rr2-accent-glow);
 }

@@ -27,7 +27,7 @@ export default function ResultsPage() {
     }
   }, [lastJsonMessage]);
 
-  const isDemo = process.env.NODE_ENV !== "production";
+  const isDemo = searchParams.get("demo") === "true" || process.env.NODE_ENV !== "production";
   const countRef = useRef(0);
 
   useEffect(() => {

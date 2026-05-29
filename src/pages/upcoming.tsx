@@ -20,7 +20,37 @@ export default function ResultsPage() {
     }
   }, [lastJsonMessage]);
 
-  if (readyState === ReadyState.OPEN) {
+  const isDemo = searchParams.get("demo") === "true" || process.env.NODE_ENV !== "production";
+
+  useEffect(() => {
+    if (isDemo) {
+      setStartlists([
+        {
+          title: "Men's 100m Round 1",
+          distance: 100,
+          startTime: "10:00",
+          date: "2026-05-29",
+          members: []
+        },
+        {
+          title: "Women's 200m Heats",
+          distance: 200,
+          startTime: "11:30",
+          date: "2026-05-29",
+          members: []
+        },
+        {
+          title: "Men's 400m Final",
+          distance: 400,
+          startTime: "15:00",
+          date: "2026-05-29",
+          members: []
+        }
+      ]);
+    }
+  }, [isDemo]);
+
+  if (readyState === ReadyState.OPEN || isDemo) {
     return (
       <UpcomingTable startlists={startlists} />
     );

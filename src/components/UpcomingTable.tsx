@@ -6,7 +6,7 @@ export default function UpcomingTable({
   startlists: Startlist[];
 }) {
   return (
-    <div className="h-screen flex flex-col justify-end w-[22%] text-2xl">
+    <div className="w-full h-full flex flex-col text-4xl">
       <table className="rounded-md table-fixed w-full">
         <caption className="p-2 font-bold text-left bg-gray-200 rounded-t-md">
           Kommende Läufe
