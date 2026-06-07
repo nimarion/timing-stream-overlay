@@ -32,10 +32,15 @@ export default function TimingPage() {
 
   useEffect(() => {
     if (isDemo) {
-      setWind(1.5);
+      setWind(null);
       const startTime = Date.now();
       const interval = setInterval(() => {
         const totalSeconds = (Date.now() - startTime) / 1000;
+
+        if (totalSeconds >= 10) {
+          setWind((prev) => (prev === null ? 1.5 : prev));
+        }
+
         if (totalSeconds < 60) {
           setTime(totalSeconds.toFixed(2));
         } else {
@@ -58,21 +63,23 @@ export default function TimingPage() {
 
   if (readyState === ReadyState.OPEN || isDemo) {
     return (
-      <div className="flex flex-row gap-4 justify-end mt-auto">
-        <div className="flex flex-row gap-4 h-20 w-auto">
-          {wind !== null && (
-            <div
-              className={`${
-                wind >= 2.5 ? "bg-red-500" : "bg-green-500"
-              }  w-auto p-4 rounded-md font-bold text-5xl justify-center items-center flex flex-row gap-4`}
-            >
+      <div className="flex flex-row gap-4 justify-end mt-auto overflow-hidden">
+        <div className="flex flex-row gap-4 h-20 w-auto overflow-hidden">
+          <div
+            className={`transition-all duration-500 ease-in-out overflow-hidden flex flex-row items-center gap-4 rounded-md font-bold text-5xl h-full ${
+              wind !== null
+                ? `${wind >= 2.5 ? "bg-red-500" : "bg-green-500"} p-4 max-w-[300px] opacity-100 scale-100`
+                : "max-w-0 p-0 opacity-0 scale-90 pointer-events-none"
+            }`}
+          >
+            <div className="flex flex-row items-center gap-4 whitespace-nowrap">
               <WindIcon className="w-8 h-8 mt-2" />
-              <p>{wind}</p>
+              <p>{wind !== null ? wind : "0.0"}</p>
             </div>
-          )}
+          </div>
           {time && (
             <div
-              className="bg-gray-100 flex px-4 transition-[width] duration-300 ease-in-out rounded-md text-right text-5xl justify-center items-center box-content"
+              className="bg-gray-100 flex px-4 transition-[width] duration-300 ease-in-out rounded-md text-right text-5xl justify-center items-center box-content overflow-hidden"
               style={{ width: `${Math.max(3, time.length + 0.5)}ch` }}
             >
               <p className="time text-right w-full font-bold tabular-nums">{time}</p>

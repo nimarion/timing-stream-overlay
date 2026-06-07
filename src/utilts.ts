@@ -4,7 +4,19 @@ export function getRandomFirstName() {
 }
 
 export function getRandomLastName() {
-  const names = ["Smith", "Müller", "Lee", "Brown", "Khan", "Garcia"];
+  const names = [
+    "Smith",
+    "Müller",
+    "Lee",
+    "Brown",
+    "Khan",
+    "Garcia",
+    "Schwarzenberger",
+    "Papathanasopoulos",
+    "Rodriguez Santana",
+    "Müller-Wohlfahrt",
+    "Vandermeersch"
+  ];
   return names[Math.floor(Math.random() * names.length)];
 }
 

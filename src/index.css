@@ -20,10 +20,16 @@
 * {
     overflow: hidden;
     overflow-y: auto;
+    scrollbar-width: none; /* Hide scrollbars on Firefox */
+    -ms-overflow-style: none; /* Hide scrollbars on IE/Edge */
+}
+
+*::-webkit-scrollbar {
+    display: none; /* Hide scrollbars on Chrome, Safari, and Opera for all elements */
 }
 
 ::-webkit-scrollbar {
-    display: none;
+    display: none; /* Hide scrollbar for document root */
 }
 
 body {
@@ -85,7 +91,8 @@ body::-webkit-scrollbar {
     }
 }
 
-table > caption.bg-gray-200 {
+table > caption.bg-gray-200,
+.table-caption-header {
     background: var(--rr2-panel-bg) !important;
     color: var(--rr2-accent) !important;
     font-weight: 700 !important;
