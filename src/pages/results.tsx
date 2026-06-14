@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import ResultsTable from "@/components/ResultsTable";
-import { Result } from "@/types";
+import { Result, WebSocketMessage } from "@/types";
 import { useDemoResults } from "@/hooks/useDemoData";
 
 import { isDemo } from "@/utils";
@@ -15,11 +15,10 @@ export default function ResultsPage() {
   const [results, setResults] = useState<Result[]>([]);
   useEffect(() => {
     if (!lastJsonMessage) return;
-    const message = lastJsonMessage as any;
-    const type = message.type;
-    if (type === "results") {
+    const message = lastJsonMessage as WebSocketMessage;
+    if (message.type === "results") {
       setResults(message.results);
-    } else if (type === "raceStarted") {
+    } else if (message.type === "raceStarted") {
       setResults([]);
     }
   }, [lastJsonMessage]);

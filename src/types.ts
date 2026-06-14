@@ -24,3 +24,9 @@ export type Result = {
     nation: string;
     lane: string;
   };
+
+  export type WebSocketMessage = 
+    | { type: "results"; results: Result[] }
+    | { type: "raceStarted" }
+    | { type: "startlists"; startlists: Startlist[] }
+    | (Startlist & { type: "startlist" });

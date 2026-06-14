@@ -1,12 +1,12 @@
 import UpcomingTable from "@/components/UpcomingTable";
-import { Startlist } from "@/types";
+import { Startlist, WebSocketMessage } from "@/types";
 import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useDemoUpcomingStartlists } from "@/hooks/useDemoData";
 
 import { isDemo } from "@/utils";
 
-export default function ResultsPage() {
+export default function UpcomingPage() {
   const searchParams = new URLSearchParams(window.location.search);
   const websocketUrl = searchParams.get("ws") || "ws://localhost:8080";
   const { lastJsonMessage, readyState } = useWebSocket(websocketUrl, {
@@ -16,9 +16,8 @@ export default function ResultsPage() {
 
   useEffect(() => {
     if (!lastJsonMessage) return;
-    const message = lastJsonMessage as any;
-    const type = message.type;
-    if (type === "startlists") {
+    const message = lastJsonMessage as WebSocketMessage;
+    if (message.type === "startlists") {
       setStartlists(message.startlists);
     }
   }, [lastJsonMessage]);
