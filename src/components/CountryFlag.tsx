@@ -1,4 +1,4 @@
-import { findCountry } from "@/country-utils";
+import { findCountry } from "@/utils/country";
 import Flag from "react-world-flags";
 
 export default function CountryFlag({
