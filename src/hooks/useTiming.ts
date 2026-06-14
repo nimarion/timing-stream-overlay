@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { WebSocketMessage, Result, Startlist } from "@/types";
+import { Result, Startlist, WebSocketMessageSchema } from "@/types";
 import { isDemo } from "@/utils";
 import { useDemoResults, useDemoStartlist, useDemoUpcomingStartlists } from "./useDemoData";
 
@@ -22,7 +22,14 @@ export function useLiveResults(maxDemoResults?: number) {
 
   useEffect(() => {
     if (!lastJsonMessage) return;
-    const message = lastJsonMessage as WebSocketMessage;
+    
+    const parsed = WebSocketMessageSchema.safeParse(lastJsonMessage);
+    if (!parsed.success) {
+      console.warn("Invalid WebSocket message:", parsed.error);
+      return;
+    }
+    
+    const message = parsed.data;
     if (message.type === "results") {
       setResults(message.results);
     } else if (message.type === "raceStarted") {
@@ -41,7 +48,14 @@ export function useLiveStartlist() {
 
   useEffect(() => {
     if (!lastJsonMessage) return;
-    const message = lastJsonMessage as WebSocketMessage;
+
+    const parsed = WebSocketMessageSchema.safeParse(lastJsonMessage);
+    if (!parsed.success) {
+      console.warn("Invalid WebSocket message:", parsed.error);
+      return;
+    }
+
+    const message = parsed.data;
     if (message.type === "startlist") {
       setStartlist(message);
     }
@@ -58,7 +72,14 @@ export function useLiveUpcoming() {
 
   useEffect(() => {
     if (!lastJsonMessage) return;
-    const message = lastJsonMessage as WebSocketMessage;
+    
+    const parsed = WebSocketMessageSchema.safeParse(lastJsonMessage);
+    if (!parsed.success) {
+      console.warn("Invalid WebSocket message:", parsed.error);
+      return;
+    }
+
+    const message = parsed.data;
     if (message.type === "startlists") {
       setStartlists(message.startlists);
     }

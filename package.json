@@ -15,7 +15,8 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3",
     "react-use-websocket": "^4.13.0",
-    "react-world-flags": "^1.6.0"
+    "react-world-flags": "^1.6.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
