@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useDemoUpcomingStartlists } from "@/hooks/useDemoData";
 
+import { isDemo } from "@/utils";
+
 export default function ResultsPage() {
   const searchParams = new URLSearchParams(window.location.search);
   const websocketUrl = searchParams.get("ws") || "ws://localhost:8080";
@@ -21,11 +23,11 @@ export default function ResultsPage() {
     }
   }, [lastJsonMessage]);
 
-  const isDemo = searchParams.get("demo") === "true" || process.env.NODE_ENV !== "production";
+  const demoMode = isDemo();
 
-  useDemoUpcomingStartlists(isDemo, setStartlists);
+  useDemoUpcomingStartlists(demoMode, setStartlists);
 
-  if (readyState === ReadyState.OPEN || isDemo) {
+  if (readyState === ReadyState.OPEN || demoMode) {
     return (
       <UpcomingTable startlists={startlists.slice(0, 5)} />
     );

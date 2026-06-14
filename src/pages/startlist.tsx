@@ -4,6 +4,8 @@ import StartlistTable from "@/components/StartlistTable";
 import { Startlist } from "@/types";
 import { useDemoStartlist } from "@/hooks/useDemoData";
 
+import { isDemo } from "@/utils";
+
 export default function ResultsPage() {
   const searchParams = new URLSearchParams(window.location.search);
   const websocketUrl = searchParams.get("ws") || "ws://localhost:8080";
@@ -21,11 +23,11 @@ export default function ResultsPage() {
     }
   }, [lastJsonMessage]);
 
-  const isDemo = searchParams.get("demo") === "true" || process.env.NODE_ENV !== "production";
+  const demoMode = isDemo();
 
-  useDemoStartlist(isDemo, setStartlist);
+  useDemoStartlist(demoMode, setStartlist);
 
-  if (readyState === ReadyState.OPEN || isDemo) {
+  if (readyState === ReadyState.OPEN || demoMode) {
     if (!startlist) {
       return null;
     }

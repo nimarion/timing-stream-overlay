@@ -32,6 +32,12 @@ export function getRandomTime() {
   return `${minutes}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
 }
 
-export function isDemo(){
-    return process.env.NODE_ENV !== "production"
+export function isDemo() {
+  if (typeof window !== "undefined") {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get("demo") === "true") {
+      return true;
+    }
+  }
+  return process.env.NODE_ENV !== "production";
 }
