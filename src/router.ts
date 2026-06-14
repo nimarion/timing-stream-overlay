@@ -4,6 +4,7 @@
 import { components, hooks, utils } from '@generouted/react-router/client'
 
 export type Path =
+  | `/lower-third`
   | `/reactions`
   | `/results`
   | `/startlist`

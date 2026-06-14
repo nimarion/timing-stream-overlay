@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { Result, Startlist, WebSocketMessageSchema } from "@/types";
+import { Result, Startlist, AthleteProfile, WebSocketMessageSchema } from "@/types";
 import { isDemo } from "@/utils";
-import { useDemoResults, useDemoStartlist, useDemoUpcomingStartlists } from "./useDemoData";
+import { useDemoResults, useDemoStartlist, useDemoUpcomingStartlists, useDemoLowerThird } from "./useDemoData";
 
 export function useTimingWebSocket() {
   const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : new URLSearchParams();
@@ -14,6 +14,30 @@ export function useTimingWebSocket() {
   const isConnected = readyState === ReadyState.OPEN;
 
   return { lastJsonMessage, isConnected, demoMode };
+}
+
+export function useLiveLowerThird() {
+  const { lastJsonMessage, isConnected, demoMode } = useTimingWebSocket();
+  const [athlete, setAthlete] = useState<AthleteProfile | null>(null);
+
+  useEffect(() => {
+    if (!lastJsonMessage) return;
+
+    const parsed = WebSocketMessageSchema.safeParse(lastJsonMessage);
+    if (!parsed.success) {
+      console.warn("Invalid WebSocket message:", parsed.error);
+      return;
+    }
+
+    const message = parsed.data;
+    if (message.type === "lowerThird") {
+      setAthlete(message.athlete);
+    }
+  }, [lastJsonMessage]);
+
+  useDemoLowerThird(demoMode, setAthlete);
+
+  return { athlete, isConnected, demoMode };
 }
 
 export function useLiveResults(maxDemoResults?: number) {

@@ -31,3 +31,15 @@ export function getRandomTime() {
   const milliseconds = Math.floor(Math.random() * 1000);
   return `${minutes}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
 }
+
+export function getRandomSubtitle() {
+  const subs = [
+    "World Record Holder",
+    "Personal Best: 9.58s",
+    "Season Best: 9.80s",
+    "Olympic Champion",
+    "European Champion",
+    "National Champion"
+  ];
+  return subs[Math.floor(Math.random() * subs.length)];
+}

@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
-import { Result, Startlist } from "@/types";
+import { Result, Startlist, AthleteProfile } from "@/types";
 import {
   getRandomFirstName,
   getRandomLastName,
   getRandomNation,
+  getRandomSubtitle,
 } from "@/utils/mock";
 
 // Extracted from useDemoResults
@@ -40,6 +41,31 @@ export function useDemoResults(isDemo: boolean, setResults: React.Dispatch<React
       };
     }
   }, [isDemo, setResults, maxResults]);
+}
+
+export function useDemoLowerThird(isDemo: boolean, setAthlete: React.Dispatch<React.SetStateAction<AthleteProfile | null>>) {
+  useEffect(() => {
+    if (isDemo) {
+      let showing = true;
+      const toggle = () => {
+        if (showing) {
+          setAthlete({
+            firstname: getRandomFirstName(),
+            lastname: getRandomLastName(),
+            nation: getRandomNation(),
+            subtitle: getRandomSubtitle(),
+          });
+        } else {
+          setAthlete(null);
+        }
+        showing = !showing;
+      };
+
+      toggle(); // show immediately
+      const interval = setInterval(toggle, 5000); // toggle every 5 seconds
+      return () => clearInterval(interval);
+    }
+  }, [isDemo, setAthlete]);
 }
 
 // Extracted from startlist.tsx
