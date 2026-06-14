@@ -1,3 +1,6 @@
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
 export function getRandomFirstName() {
   const names = ["Alex", "Lena", "Max", "Tina", "John", "Ella"];
   return names[Math.floor(Math.random() * names.length)];
@@ -54,4 +57,8 @@ export function isDemo() {
     }
   }
   return process.env.NODE_ENV !== "production";
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }
