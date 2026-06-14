@@ -1,32 +1,10 @@
-import { useEffect, useState } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
 import StartlistTable from "@/components/StartlistTable";
-import { Startlist, WebSocketMessage } from "@/types";
-import { useDemoStartlist } from "@/hooks/useDemoData";
-
-import { isDemo } from "@/utils";
+import { useLiveStartlist } from "@/hooks/useTiming";
 
 export default function StartlistPage() {
-  const searchParams = new URLSearchParams(window.location.search);
-  const websocketUrl = searchParams.get("ws") || "ws://localhost:8080";
-  const { lastJsonMessage, readyState } = useWebSocket(websocketUrl, {
-    shouldReconnect: () => true,
-  });
-  const [startlist, setStartlist] = useState<Startlist>();
+  const { startlist, isConnected, demoMode } = useLiveStartlist();
 
-  useEffect(() => {
-    if (!lastJsonMessage) return;
-    const message = lastJsonMessage as WebSocketMessage;
-    if (message.type === "startlist") {
-      setStartlist(message);
-    }
-  }, [lastJsonMessage]);
-
-  const demoMode = isDemo();
-
-  useDemoStartlist(demoMode, setStartlist);
-
-  if (readyState === ReadyState.OPEN || demoMode) {
+  if (isConnected || demoMode) {
     if (!startlist) {
       return null;
     }

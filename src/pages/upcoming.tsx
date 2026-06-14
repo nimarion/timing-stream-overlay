@@ -1,35 +1,11 @@
 import UpcomingTable from "@/components/UpcomingTable";
-import { Startlist, WebSocketMessage } from "@/types";
-import { useEffect, useState } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
-import { useDemoUpcomingStartlists } from "@/hooks/useDemoData";
-
-import { isDemo } from "@/utils";
+import { useLiveUpcoming } from "@/hooks/useTiming";
 
 export default function UpcomingPage() {
-  const searchParams = new URLSearchParams(window.location.search);
-  const websocketUrl = searchParams.get("ws") || "ws://localhost:8080";
-  const { lastJsonMessage, readyState } = useWebSocket(websocketUrl, {
-    shouldReconnect: () => true,
-  });
-  const [startlists, setStartlists] = useState<Startlist[]>([]);
+  const { startlists, isConnected, demoMode } = useLiveUpcoming();
 
-  useEffect(() => {
-    if (!lastJsonMessage) return;
-    const message = lastJsonMessage as WebSocketMessage;
-    if (message.type === "startlists") {
-      setStartlists(message.startlists);
-    }
-  }, [lastJsonMessage]);
-
-  const demoMode = isDemo();
-
-  useDemoUpcomingStartlists(demoMode, setStartlists);
-
-  if (readyState === ReadyState.OPEN || demoMode) {
-    return (
-      <UpcomingTable startlists={startlists.slice(0, 5)} />
-    );
+  if (isConnected || demoMode) {
+    return <UpcomingTable startlists={startlists.slice(0, 5)} />;
   }
   return null;
 }
