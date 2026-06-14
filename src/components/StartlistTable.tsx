@@ -1,5 +1,15 @@
 import { Startlist } from "@/types";
 import CountryFlag from "./CountryFlag";
+import {
+  TableContainer,
+  TableCaption,
+  Table,
+  TableHeader,
+  TableHeaderCell,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "./ui/Table";
 
 export default function StartlistTable({
   startlist,
@@ -7,65 +17,37 @@ export default function StartlistTable({
   startlist: Startlist;
 }) {
   return (
-    <div className="w-full h-full flex flex-col justify-end antialiased text-2xl sm:text-3xl md:text-4xl">
-      <div className="p-2 font-bold text-left bg-gray-200 rounded-t-md truncate w-full table-caption-header">
+    <TableContainer className="justify-end antialiased">
+      <TableCaption>
         {startlist.title}
-      </div>
-      <table className="table-fixed w-full">
-        <thead className="sticky top-0 collapse">
-          <tr className="text-left">
-            <th className="p-4 w-12 sm:w-16 md:w-20">Bahn</th>
-            <th className="p-4 w-12 sm:w-16 md:w-20">Nation</th>
-            <th className="p-4">Name</th>
-          </tr>
-        </thead>
+      </TableCaption>
+      <Table>
+        <TableHeader className="sticky top-0">
+          <TableHeaderCell className="w-12 sm:w-16 md:w-20">Bahn</TableHeaderCell>
+          <TableHeaderCell className="w-12 sm:w-16 md:w-20">Nation</TableHeaderCell>
+          <TableHeaderCell>Name</TableHeaderCell>
+        </TableHeader>
 
-        <tbody className="font-bold ">
+        <TableBody>
           {startlist.members.map((result, index) => {
             return (
-              <tr key={index} className="bg-gray-100">
-                <td
-                  className={`p-0 text-center ${
-                    index === 0 ? "" : "border-gray-300 border-t-2"
-                  } ${
-                    index === startlist.members.length - 1
-                      ? "rounded-bl-md"
-                      : ""
-                  }`}
-                >
-                  <div className="px-2 py-2 overflow-hidden flex items-center justify-center h-full">
-                    {result.lane}
-                  </div>
-                </td>
-                <td
-                  className={`p-0 ${
-                    index != 0 ? "border-gray-300 border-t-2" : ""
-                  }`}
-                >
-                  <div className="px-2 py-2 overflow-hidden flex items-center h-full">
-                    <CountryFlag nation={result.nation} />
-                  </div>
-                </td>
-                <td
-                  className={`p-0 ${
-                    index != 0 ? "border-gray-300 border-t-2" : ""
-                  } ${
-                    index === startlist.members.length - 1
-                      ? "rounded-br-md"
-                      : ""
-                  }`}
-                >
-                  <div className="px-2 py-2 overflow-hidden flex items-center h-full min-w-0 w-full">
-                    <span className="truncate w-full">
-                      {result.firstname} {result.lastname.toUpperCase()}
-                    </span>
-                  </div>
-                </td>
-              </tr>
+              <TableRow key={index} index={index}>
+                <TableCell index={index} totalRows={startlist.members.length} isFirstCol align="center">
+                  {result.lane}
+                </TableCell>
+                <TableCell index={index} totalRows={startlist.members.length}>
+                  <CountryFlag nation={result.nation} />
+                </TableCell>
+                <TableCell index={index} totalRows={startlist.members.length} isLastCol>
+                  <span className="truncate w-full">
+                    {result.firstname} {result.lastname.toUpperCase()}
+                  </span>
+                </TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
