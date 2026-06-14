@@ -4,7 +4,7 @@ import {
   getRandomFirstName,
   getRandomLastName,
   getRandomNation,
-} from "@/utils";
+} from "@/utils/mock";
 
 // Extracted from useDemoResults
 export function useDemoResults(isDemo: boolean, setResults: React.Dispatch<React.SetStateAction<Result[]>>, maxResults: number = 12) {
