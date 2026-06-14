@@ -52,7 +52,7 @@ export default function ResultsPage() {
 
   if (readyState === ReadyState.OPEN || isDemo) {
     return (
-      <UpcomingTable startlists={startlists} />
+      <UpcomingTable startlists={startlists.slice(0, 5)} />
     );
   }
   return null;
