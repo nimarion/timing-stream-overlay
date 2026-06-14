@@ -4,17 +4,82 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    --rr2-accent: #dc2626;
-    --rr2-accent-glow: rgba(220, 38, 38, 0.35);
-    --rr2-panel-bg: rgba(0, 0, 0, 0.85);
-    --rr2-row-bg: linear-gradient(135deg, rgba(25,25,25,0.95), rgba(35,35,35,0.95));
-    --rr2-text-primary: #FFFFFF;
-    --rr2-text-secondary: #dddddd;
-    --rr2-text-muted: rgba(255, 255, 255, 0.4);
-    --rr2-row-border: rgba(255, 255, 255, 0.08);
-    --rr2-font-display: 'Roboto', Arial, sans-serif;
-    --rr2-font-mono: 'Consolas', 'Courier New', monospace;
+:root, [data-theme="rr2"] {
+    --theme-accent: #dc2626;
+    --theme-accent-glow: rgba(220, 38, 38, 0.35);
+    --theme-panel-bg: rgba(0, 0, 0, 0.85);
+    --theme-row-bg: linear-gradient(135deg, rgba(25,25,25,0.95), rgba(35,35,35,0.95));
+    --theme-text-primary: #FFFFFF;
+    --theme-text-secondary: #dddddd;
+    --theme-text-muted: rgba(255, 255, 255, 0.4);
+    --theme-row-border: rgba(255, 255, 255, 0.08);
+    --theme-font-display: 'Roboto', Arial, sans-serif;
+    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+[data-theme="light"] {
+    --theme-accent: #2563eb;
+    --theme-accent-glow: rgba(37, 99, 235, 0.35);
+    --theme-panel-bg: rgba(255, 255, 255, 0.95);
+    --theme-row-bg: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,246,0.95));
+    --theme-text-primary: #1f2937;
+    --theme-text-secondary: #4b5563;
+    --theme-text-muted: rgba(31, 41, 55, 0.4);
+    --theme-row-border: rgba(0, 0, 0, 0.1);
+    --theme-font-display: 'Roboto', Arial, sans-serif;
+    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+[data-theme="olympics"] {
+    --theme-accent: #d6a117;
+    --theme-accent-glow: rgba(214, 161, 23, 0.35);
+    --theme-panel-bg: rgba(0, 26, 87, 0.9);
+    --theme-row-bg: linear-gradient(135deg, rgba(0, 26, 87, 0.95), rgba(0, 15, 50, 0.95));
+    --theme-text-primary: #FFFFFF;
+    --theme-text-secondary: #cbd5e1;
+    --theme-text-muted: rgba(255, 255, 255, 0.4);
+    --theme-row-border: rgba(255, 255, 255, 0.15);
+    --theme-font-display: 'Roboto', Arial, sans-serif;
+    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+[data-theme="cyberpunk"] {
+    --theme-accent: #06b6d4;
+    --theme-accent-glow: rgba(6, 182, 212, 0.35);
+    --theme-panel-bg: rgba(15, 23, 42, 0.85);
+    --theme-row-bg: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+    --theme-text-primary: #f8fafc;
+    --theme-text-secondary: #94a3b8;
+    --theme-text-muted: rgba(248, 250, 252, 0.4);
+    --theme-row-border: rgba(255, 255, 255, 0.1);
+    --theme-font-display: 'Roboto', Arial, sans-serif;
+    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+[data-theme="broadcast"] {
+    --theme-accent: #fbbf24;
+    --theme-accent-glow: rgba(251, 191, 36, 0.35);
+    --theme-panel-bg: rgba(0, 0, 0, 0.95);
+    --theme-row-bg: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(5, 5, 5, 0.95));
+    --theme-text-primary: #ffffff;
+    --theme-text-secondary: #d4d4d8;
+    --theme-text-muted: rgba(255, 255, 255, 0.4);
+    --theme-row-border: rgba(255, 255, 255, 0.15);
+    --theme-font-display: 'Roboto', Arial, sans-serif;
+    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+[data-theme="emerald"] {
+    --theme-accent: #34d399;
+    --theme-accent-glow: rgba(52, 211, 153, 0.35);
+    --theme-panel-bg: rgba(2, 44, 34, 0.9);
+    --theme-row-bg: linear-gradient(135deg, rgba(6, 78, 59, 0.95), rgba(2, 44, 34, 0.95));
+    --theme-text-primary: #ecfdf5;
+    --theme-text-secondary: #a7f3d0;
+    --theme-text-muted: rgba(236, 253, 245, 0.4);
+    --theme-row-border: rgba(255, 255, 255, 0.08);
+    --theme-font-display: 'Roboto', Arial, sans-serif;
+    --theme-font-mono: 'Consolas', 'Courier New', monospace;
 }
 
 * {
@@ -93,8 +158,8 @@ body::-webkit-scrollbar {
 
 table > caption.bg-gray-200,
 .table-caption-header {
-    background: var(--rr2-panel-bg) !important;
-    color: var(--rr2-accent) !important;
+    background: var(--theme-panel-bg) !important;
+    color: var(--theme-accent) !important;
     font-weight: 700 !important;
     font-size: 1.05em;
     padding: 12px 16px !important;
@@ -104,11 +169,11 @@ table > caption.bg-gray-200,
 }
 
 thead {
-    background: var(--rr2-panel-bg);
+    background: var(--theme-panel-bg);
 }
 
 thead th {
-    color: var(--rr2-text-secondary) !important;
+    color: var(--theme-text-secondary) !important;
     font-weight: 500 !important;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -117,22 +182,22 @@ thead th {
     padding-bottom: 14px !important;
 }
 
-/* Body rows — gradient row background, white text */
+/* Body rows — gradient row background, text primary */
 tbody tr.bg-gray-100 {
-    background: var(--rr2-row-bg) !important;
-    color: var(--rr2-text-primary) !important;
+    background: var(--theme-row-bg) !important;
+    color: var(--theme-text-primary) !important;
 }
 
 /* Soft row separators */
 .border-gray-300,
 [class*="border-gray-300"] {
-    border-color: var(--rr2-row-border) !important;
+    border-color: var(--theme-row-border) !important;
 }
 
 /* Result / time column — right-aligned td in tbody → accent + mono */
 tbody td.text-right {
-    color: var(--rr2-accent) !important;
-    font-family: var(--rr2-font-mono) !important;
+    color: var(--theme-accent) !important;
+    font-family: var(--theme-font-mono) !important;
     font-weight: 700 !important;
     letter-spacing: 0.5px;
 }
@@ -140,38 +205,38 @@ tbody td.text-right {
 /* Carve-out: ReactionsTable's right cell holds the reaction-bar div,
    not a plain time string. Keep the bar's own visual. */
 tbody td.text-right > div.bg-black {
-    background: var(--rr2-panel-bg) !important;
-    color: var(--rr2-text-primary);
+    background: var(--theme-panel-bg) !important;
+    color: var(--theme-text-primary);
 }
 
 tbody td.text-right > div.bg-black > div.bg-neutral-800 {
     background: rgba(0,0,0,0.6) !important;
 }
 
-/* ── RR2 skin: TimingPage (live time + wind, top-right) ─────── */
+/* ── Dynamic skin: TimingPage (live time + wind, top-right) ─────── */
 
 /* Timer text */
 .time {
-    font-family: var(--rr2-font-mono) !important;
-    color: var(--rr2-text-primary) !important;
+    font-family: var(--theme-font-mono) !important;
+    color: var(--theme-text-primary) !important;
     letter-spacing: 1px;
 }
 
 /* The timer's outer box shares bg-gray-100 with table rows.
    Narrow to non-tr elements so this rule doesn't touch table rows. */
 div.bg-gray-100 {
-    background: var(--rr2-panel-bg) !important;
-    color: var(--rr2-text-primary) !important;
+    background: var(--theme-panel-bg) !important;
+    color: var(--theme-text-primary) !important;
 }
 
-/* Wind: keep semantic green/red but tint to match RR2 contrast */
+/* Wind: keep semantic green/red but tint to match theme contrast */
 .bg-green-500 {
     background: rgba(34, 197, 94, 0.95) !important;
-    color: var(--rr2-text-primary) !important;
+    color: var(--theme-text-primary) !important;
 }
 
 .bg-red-500 {
-    background: var(--rr2-accent) !important;
-    color: var(--rr2-text-primary) !important;
-    box-shadow: 0 4px 12px var(--rr2-accent-glow);
+    background: var(--theme-accent) !important;
+    color: var(--theme-text-primary) !important;
+    box-shadow: 0 4px 12px var(--theme-accent-glow);
 }
