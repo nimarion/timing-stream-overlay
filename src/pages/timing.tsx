@@ -74,7 +74,7 @@ export default function TimingPage() {
           >
             <div className="flex flex-row items-center gap-4 whitespace-nowrap">
               <WindIcon className="w-8 h-8 mt-2" />
-              <p>{wind !== null ? wind : "0.0"}</p>
+              <p>{wind !== null ? wind.toFixed(1) : "0.0"}</p>
             </div>
           </div>
           {time && (
