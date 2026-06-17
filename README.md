@@ -27,3 +27,8 @@ https://github.com/nimarion/timing-stream-overlay/assets/23435250/83324bde-4b6b-
 - [30. Bauhaus Junioren Gala, Sonntag 23.06.2024](https://www.youtube.com/watch?v=HHN-kfUnWc0)
 - [9. Lange Laufnacht - Nachmittagsprogramm, Samstag 31.05.2025](https://www.youtube.com/watch?v=wCJi3mV3sCk)
 - [9. Lange Laufnacht - Abendprogramm, Samstag 31.05.2025](https://www.youtube.com/watch?v=NNHm30hNypc)
+- [31. Bauhaus Junioren Gala, Samstag 28.06.2024](https://www.youtube.com/watch?v=HCOeNOMjLVk)
+- [31. Bauhaus Junioren Gala, Sonntag 29.06.2024](https://www.youtube.com/watch?v=6-MRGy8v6To)
+- [10. Lange Laufnacht - 30.05.2026](https://www.youtube.com/watch?v=FRQHYYih21s)
+- [32. Bauhaus Junioren Gala, Samstag 13.06.2026](https://www.youtube.com/watch?v=ogwdE7tuuow)
+- [32. Bauhaus Junioren Gala, Sonntag 14.06.2026](https://www.youtube.com/watch?v=c9TL9XcN6Vg)
