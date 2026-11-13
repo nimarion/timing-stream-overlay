@@ -1,37 +1,48 @@
 import WindIcon from "@/components/WindIcon";
+import { useTimingWebSocket } from "@/hooks/useTiming";
+import { WebSocketMessageSchema } from "@/types";
 import { useEffect, useState } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+
+function formatWind(wind: number): string {
+  const rounded = Number(wind.toFixed(1));
+  if (rounded === 0) return "+0.0";
+  return rounded > 0 ? `+${rounded.toFixed(1)}` : rounded.toFixed(1);
+}
 
 export default function TimingPage() {
-  const searchParams = new URLSearchParams(window.location.search);
-  const websocketUrl = searchParams.get("ws") || "ws://localhost:8080";
-  const { lastJsonMessage, readyState } = useWebSocket(websocketUrl, {
-    shouldReconnect: () => true,
-  });
+  const { lastJsonMessage, isConnected, demoMode } = useTimingWebSocket();
   const [wind, setWind] = useState<number | null>(null);
   const [time, setTime] = useState<string | null>("0.0");
+
   useEffect(() => {
     if (!lastJsonMessage) return;
-    const message = lastJsonMessage as any;
-    const type = message.type;
-    if (type === "wind") {
-      const wind = Number(message.wind);
-      if (isNaN(wind)) return;
-      setWind(Number(wind.toFixed(1)));
+
+    const parsed = WebSocketMessageSchema.safeParse(lastJsonMessage);
+    if (!parsed.success) {
+      console.warn("Invalid WebSocket message:", parsed.error);
+      return;
     }
-    if (type === "runningTime") {
-      const time = message.time;
-      if (time === "0.0") {
+
+    const message = parsed.data;
+    if (message.type === "wind") {
+      if (message.wind === null || Number.isNaN(message.wind)) {
+        setWind(null);
+      } else {
+        setWind(Number(message.wind.toFixed(1)));
+      }
+    } else if (message.type === "runningTime") {
+      const trimmedTime = message.time.trim();
+      if (trimmedTime === "0.0" || trimmedTime === "0.00") {
         setWind(null);
       }
-      setTime(time);
+      setTime(trimmedTime);
+    } else if (message.type === "raceStarted") {
+      setWind(null);
     }
   }, [lastJsonMessage]);
 
-  const isDemo = searchParams.get("demo") === "true" || process.env.NODE_ENV !== "production";
-
   useEffect(() => {
-    if (isDemo) {
+    if (demoMode) {
       setWind(null);
       const startTime = Date.now();
       const interval = setInterval(() => {
@@ -59,22 +70,22 @@ export default function TimingPage() {
       }, 30);
       return () => clearInterval(interval);
     }
-  }, [isDemo]);
+  }, [demoMode]);
 
-  if (readyState === ReadyState.OPEN || isDemo) {
+  if (isConnected || demoMode) {
     return (
       <div className="flex flex-row gap-4 justify-end mt-auto overflow-hidden">
         <div className="flex flex-row gap-4 h-20 w-auto overflow-hidden">
           <div
             className={`transition-all duration-500 ease-in-out overflow-hidden flex flex-row items-center gap-4 rounded-md font-bold text-5xl h-full ${
               wind !== null
-                ? `${wind >= 2.5 ? "bg-red-500" : "bg-green-500"} p-4 max-w-[300px] opacity-100 scale-100`
+                ? `${wind > 2.0 ? "bg-red-500" : "bg-green-500"} p-4 max-w-[300px] opacity-100 scale-100`
                 : "max-w-0 p-0 opacity-0 scale-90 pointer-events-none"
             }`}
           >
             <div className="flex flex-row items-center gap-4 whitespace-nowrap">
               <WindIcon className="w-8 h-8 mt-2" />
-              <p>{wind !== null ? wind.toFixed(1) : "0.0"}</p>
+              <p>{wind !== null ? formatWind(wind) : "+0.0"}</p>
             </div>
           </div>
           {time && (

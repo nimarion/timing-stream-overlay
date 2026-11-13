@@ -35,10 +35,17 @@ export const StartlistSchema = z.object({
 });
 
 export const WebSocketMessageSchema = z.discriminatedUnion("type", [
-  z.object({ type: z.literal("results"), results: z.array(ResultSchema) }),
+  z.object({
+    type: z.literal("results"),
+    title: z.string().optional(),
+    distance: z.number().optional(),
+    results: z.array(ResultSchema),
+  }),
   z.object({ type: z.literal("raceStarted") }),
   z.object({ type: z.literal("startlists"), startlists: z.array(StartlistSchema) }),
   z.object({ type: z.literal("lowerThird"), athlete: AthleteProfileSchema.nullable() }),
+  z.object({ type: z.literal("runningTime"), time: z.string() }),
+  z.object({ type: z.literal("wind"), wind: z.number().nullable() }),
   StartlistSchema.extend({ type: z.literal("startlist") }),
 ]);
 
