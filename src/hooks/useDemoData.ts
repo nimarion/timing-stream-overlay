@@ -7,8 +7,49 @@ import {
   getRandomSubtitle,
 } from "@/utils/mock";
 
-// Extracted from useDemoResults
-export function useDemoResults(isDemo: boolean, setResults: React.Dispatch<React.SetStateAction<Result[]>>, maxResults: number = 12) {
+export function useDemoTiming(
+  isDemo: boolean,
+  setTime: React.Dispatch<React.SetStateAction<string | null>>,
+  setWind: React.Dispatch<React.SetStateAction<number | null>>
+) {
+  useEffect(() => {
+    if (!isDemo) return;
+
+    setWind(null);
+    const startTime = Date.now();
+    const interval = setInterval(() => {
+      const totalSeconds = (Date.now() - startTime) / 1000;
+
+      if (totalSeconds >= 10) {
+        setWind((prev) => (prev === null ? 1.5 : prev));
+      }
+
+      if (totalSeconds < 60) {
+        setTime(totalSeconds.toFixed(2));
+      } else {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        const secondsStr = seconds < 10 ? `0${seconds.toFixed(2)}` : seconds.toFixed(2);
+        if (minutes < 60) {
+          setTime(`${minutes}:${secondsStr}`);
+        } else {
+          const hours = Math.floor(minutes / 60);
+          const remainingMinutes = minutes % 60;
+          const minStr = remainingMinutes < 10 ? `0${remainingMinutes}` : remainingMinutes;
+          setTime(`${hours}:${minStr}:${secondsStr}`);
+        }
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [isDemo, setTime, setWind]);
+}
+
+export function useDemoResults(
+  isDemo: boolean,
+  setResults: React.Dispatch<React.SetStateAction<Result[]>>,
+  maxResults: number = 12
+) {
   const countRef = useRef(0);
 
   useEffect(() => {
@@ -37,13 +78,16 @@ export function useDemoResults(isDemo: boolean, setResults: React.Dispatch<React
 
       return () => {
         clearInterval(interval);
-        countRef.current = 0; // Reset ref on unmount or isDemo change
+        countRef.current = 0;
       };
     }
   }, [isDemo, setResults, maxResults]);
 }
 
-export function useDemoLowerThird(isDemo: boolean, setAthlete: React.Dispatch<React.SetStateAction<AthleteProfile | null>>) {
+export function useDemoLowerThird(
+  isDemo: boolean,
+  setAthlete: React.Dispatch<React.SetStateAction<AthleteProfile | null>>
+) {
   useEffect(() => {
     if (isDemo) {
       let showing = true;
@@ -61,15 +105,17 @@ export function useDemoLowerThird(isDemo: boolean, setAthlete: React.Dispatch<Re
         showing = !showing;
       };
 
-      toggle(); // show immediately
-      const interval = setInterval(toggle, 5000); // toggle every 5 seconds
+      toggle();
+      const interval = setInterval(toggle, 5000);
       return () => clearInterval(interval);
     }
   }, [isDemo, setAthlete]);
 }
 
-// Extracted from startlist.tsx
-export function useDemoStartlist(isDemo: boolean, setStartlist: React.Dispatch<React.SetStateAction<Startlist | undefined>>) {
+export function useDemoStartlist(
+  isDemo: boolean,
+  setStartlist: React.Dispatch<React.SetStateAction<Startlist | undefined>>
+) {
   useEffect(() => {
     if (isDemo) {
       setStartlist({
@@ -83,14 +129,16 @@ export function useDemoStartlist(isDemo: boolean, setStartlist: React.Dispatch<R
           lastname: getRandomLastName(),
           nation: getRandomNation(),
           lane: (i + 1).toString(),
-        }))
+        })),
       });
     }
   }, [isDemo, setStartlist]);
 }
 
-// Extracted from upcoming.tsx
-export function useDemoUpcomingStartlists(isDemo: boolean, setStartlists: React.Dispatch<React.SetStateAction<Startlist[]>>) {
+export function useDemoUpcomingStartlists(
+  isDemo: boolean,
+  setStartlists: React.Dispatch<React.SetStateAction<Startlist[]>>
+) {
   useEffect(() => {
     if (isDemo) {
       setStartlists([
@@ -99,22 +147,22 @@ export function useDemoUpcomingStartlists(isDemo: boolean, setStartlists: React.
           distance: 100,
           startTime: "10:00",
           date: "2026-05-29",
-          members: []
+          members: [],
         },
         {
           title: "Women's 200m Heats",
           distance: 200,
           startTime: "11:30",
           date: "2026-05-29",
-          members: []
+          members: [],
         },
         {
           title: "Men's 400m Final",
           distance: 400,
           startTime: "15:00",
           date: "2026-05-29",
-          members: []
-        }
+          members: [],
+        },
       ]);
     }
   }, [isDemo, setStartlists]);

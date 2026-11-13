@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,7 +12,7 @@
     --theme-text-muted: rgba(255, 255, 255, 0.4);
     --theme-row-border: rgba(255, 255, 255, 0.08);
     --theme-font-display: 'Roboto', Arial, sans-serif;
-    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+    --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
 
 [data-theme="light"] {
@@ -27,7 +25,7 @@
     --theme-text-muted: rgba(31, 41, 55, 0.4);
     --theme-row-border: rgba(0, 0, 0, 0.1);
     --theme-font-display: 'Roboto', Arial, sans-serif;
-    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+    --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
 
 [data-theme="olympics"] {
@@ -40,7 +38,7 @@
     --theme-text-muted: rgba(255, 255, 255, 0.4);
     --theme-row-border: rgba(255, 255, 255, 0.15);
     --theme-font-display: 'Roboto', Arial, sans-serif;
-    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+    --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
 
 [data-theme="cyberpunk"] {
@@ -53,7 +51,7 @@
     --theme-text-muted: rgba(248, 250, 252, 0.4);
     --theme-row-border: rgba(255, 255, 255, 0.1);
     --theme-font-display: 'Roboto', Arial, sans-serif;
-    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+    --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
 
 [data-theme="broadcast"] {
@@ -66,7 +64,7 @@
     --theme-text-muted: rgba(255, 255, 255, 0.4);
     --theme-row-border: rgba(255, 255, 255, 0.15);
     --theme-font-display: 'Roboto', Arial, sans-serif;
-    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+    --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
 
 [data-theme="emerald"] {
@@ -79,22 +77,22 @@
     --theme-text-muted: rgba(236, 253, 245, 0.4);
     --theme-row-border: rgba(255, 255, 255, 0.08);
     --theme-font-display: 'Roboto', Arial, sans-serif;
-    --theme-font-mono: 'Consolas', 'Courier New', monospace;
+    --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
 
 * {
     overflow: hidden;
     overflow-y: auto;
-    scrollbar-width: none; /* Hide scrollbars on Firefox */
-    -ms-overflow-style: none; /* Hide scrollbars on IE/Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 *::-webkit-scrollbar {
-    display: none; /* Hide scrollbars on Chrome, Safari, and Opera for all elements */
+    display: none;
 }
 
 ::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for document root */
+    display: none;
 }
 
 body {
@@ -104,6 +102,7 @@ body {
     flex-direction: row;
     place-items: start;
     overflow: hidden;
+    font-family: var(--theme-font-display);
 }
 
 body::-webkit-scrollbar {
@@ -126,7 +125,7 @@ body::-webkit-scrollbar {
 .cssanimation span { display: inline-block }
 
 .fadeInBottom { animation-name: fadeInBottomRow }
-.fadeInBottom td > div { 
+.fadeInBottom td > div {
     animation-name: fadeInBottomCellWrapper;
     animation-duration: 800ms;
     animation-fill-mode: both;
@@ -150,7 +149,7 @@ body::-webkit-scrollbar {
     }
     to {
         opacity: 1;
-        max-height: 80px; /* enough to contain the row */
+        max-height: 80px;
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
     }
@@ -184,89 +183,4 @@ body::-webkit-scrollbar {
         opacity: 0;
         transform: translateX(-50px);
     }
-}
-
-table > caption.bg-gray-200,
-.table-caption-header {
-    background: var(--theme-panel-bg) !important;
-    color: var(--theme-accent) !important;
-    font-weight: 700 !important;
-    font-size: 1.05em;
-    padding: 12px 16px !important;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    backdrop-filter: blur(10px);
-}
-
-thead {
-    background: var(--theme-panel-bg);
-}
-
-thead th {
-    color: var(--theme-text-secondary) !important;
-    font-weight: 500 !important;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.65em;
-    padding-top: 14px !important;
-    padding-bottom: 14px !important;
-}
-
-/* Body rows — gradient row background, text primary */
-tbody tr.bg-gray-100 {
-    background: var(--theme-row-bg) !important;
-    color: var(--theme-text-primary) !important;
-}
-
-/* Soft row separators */
-.border-gray-300,
-[class*="border-gray-300"] {
-    border-color: var(--theme-row-border) !important;
-}
-
-/* Result / time column — right-aligned td in tbody → accent + mono */
-tbody td.text-right {
-    color: var(--theme-accent) !important;
-    font-family: var(--theme-font-mono) !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px;
-}
-
-/* Carve-out: ReactionsTable's right cell holds the reaction-bar div,
-   not a plain time string. Keep the bar's own visual. */
-tbody td.text-right > div.bg-black {
-    background: var(--theme-panel-bg) !important;
-    color: var(--theme-text-primary);
-}
-
-tbody td.text-right > div.bg-black > div.bg-neutral-800 {
-    background: rgba(0,0,0,0.6) !important;
-}
-
-/* ── Dynamic skin: TimingPage (live time + wind, top-right) ─────── */
-
-/* Timer text */
-.time {
-    font-family: var(--theme-font-mono) !important;
-    color: var(--theme-text-primary) !important;
-    letter-spacing: 1px;
-}
-
-/* The timer's outer box shares bg-gray-100 with table rows.
-   Narrow to non-tr elements so this rule doesn't touch table rows. */
-div.bg-gray-100 {
-    background: var(--theme-panel-bg) !important;
-    color: var(--theme-text-primary) !important;
-}
-
-/* Wind: keep semantic green/red but tint to match theme contrast */
-.bg-green-500 {
-    background: rgba(34, 197, 94, 0.95) !important;
-    color: var(--theme-text-primary) !important;
-}
-
-.bg-red-500 {
-    background: var(--theme-accent) !important;
-    color: var(--theme-text-primary) !important;
-    box-shadow: 0 4px 12px var(--theme-accent-glow);
 }

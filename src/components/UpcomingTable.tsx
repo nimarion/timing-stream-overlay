@@ -18,7 +18,7 @@ export default function UpcomingTable({
   return (
     <TableContainer>
       <TableCaption>
-        Kommende Läufe
+        <span className="truncate">Kommende Läufe</span>
       </TableCaption>
       <Table>
         <TableHeader>
@@ -27,14 +27,26 @@ export default function UpcomingTable({
         </TableHeader>
 
         <TableBody>
-          {startlists.map((result, index) => {
+          {startlists.map((item, index) => {
             return (
-              <TableRow key={index} index={index}>
-                <TableCell index={index} totalRows={startlists.length} isFirstCol align="center">
-                  {result.startTime}
+              <TableRow
+                key={`${item.date}-${item.startTime}-${item.title}`}
+                index={index}
+              >
+                <TableCell
+                  index={index}
+                  totalRows={startlists.length}
+                  isFirstCol
+                  align="center"
+                >
+                  {item.startTime}
                 </TableCell>
-                <TableCell index={index} totalRows={startlists.length} isLastCol>
-                  <span className="truncate w-full">{result.title}</span>
+                <TableCell
+                  index={index}
+                  totalRows={startlists.length}
+                  isLastCol
+                >
+                  <span className="truncate w-full">{item.title}</span>
                 </TableCell>
               </TableRow>
             );

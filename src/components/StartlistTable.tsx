@@ -1,5 +1,6 @@
 import { Startlist } from "@/types";
 import CountryFlag from "./CountryFlag";
+import { parseNationAndClub } from "@/utils/country";
 import {
   TableContainer,
   TableCaption,
@@ -19,7 +20,7 @@ export default function StartlistTable({
   return (
     <TableContainer className="justify-end antialiased">
       <TableCaption>
-        {startlist.title}
+        <span className="truncate">{startlist.title}</span>
       </TableCaption>
       <Table>
         <TableHeader className="sticky top-0">
@@ -29,19 +30,37 @@ export default function StartlistTable({
         </TableHeader>
 
         <TableBody>
-          {startlist.members.map((result, index) => {
+          {startlist.members.map((member, index) => {
+            const { club } = parseNationAndClub(member.nation);
+
             return (
-              <TableRow key={index} index={index}>
-                <TableCell index={index} totalRows={startlist.members.length} isFirstCol align="center">
-                  {result.lane}
+              <TableRow key={`${member.bib}-${member.lane}`} index={index}>
+                <TableCell
+                  index={index}
+                  totalRows={startlist.members.length}
+                  isFirstCol
+                  align="center"
+                >
+                  {member.lane}
                 </TableCell>
                 <TableCell index={index} totalRows={startlist.members.length}>
-                  <CountryFlag nation={result.nation} />
+                  <CountryFlag nation={member.nation} />
                 </TableCell>
-                <TableCell index={index} totalRows={startlist.members.length} isLastCol>
-                  <span className="truncate w-full">
-                    {result.firstname} {result.lastname.toUpperCase()}
-                  </span>
+                <TableCell
+                  index={index}
+                  totalRows={startlist.members.length}
+                  isLastCol
+                >
+                  <div className="flex items-baseline gap-3 truncate w-full min-w-0">
+                    <span className="truncate">
+                      {member.firstname} {member.lastname.toUpperCase()}
+                    </span>
+                    {club && (
+                      <span className="text-theme-secondary font-normal text-[0.65em] truncate shrink">
+                        {club}
+                      </span>
+                    )}
+                  </div>
                 </TableCell>
               </TableRow>
             );

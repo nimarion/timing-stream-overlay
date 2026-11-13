@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Result } from "@/types";
 import CountryFlag from "./CountryFlag";
 import { formatLastname } from "@/utils";
@@ -11,13 +12,37 @@ import {
   TableCell,
 } from "./ui/Table";
 
+const PAGE_ROTATION_MS = 5000;
+
 export default function ResultsTable({ results }: { results: Result[] }) {
-  // if more than 8 results show first and then last 7 results
-  if (results.length > 8) {
-    const firstResult = results[0];
-    const lastResults = results.slice(-7);
-    results = [firstResult, ...lastResults];
-  }
+  const totalPages =
+    results.length <= 8 ? 1 : 1 + Math.ceil((results.length - 8) / 7);
+  const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    setPage(0);
+  }, [results.length]);
+
+  useEffect(() => {
+    if (totalPages <= 1) return;
+    const interval = setInterval(() => {
+      setPage((prev) => (prev + 1) % totalPages);
+    }, PAGE_ROTATION_MS);
+    return () => clearInterval(interval);
+  }, [totalPages]);
+
+  const activePage = page < totalPages ? page : 0;
+  const visibleResults =
+    results.length <= 8
+      ? results
+      : activePage === 0
+        ? results.slice(0, 8)
+        : [
+            results[0],
+            ...results.slice(8 + (activePage - 1) * 7, 8 + activePage * 7),
+          ];
+
+  const isLeaderPinnedWithGap = results.length > 8 && activePage > 0;
 
   return (
     <TableContainer className="justify-end antialiased">
@@ -30,24 +55,55 @@ export default function ResultsTable({ results }: { results: Result[] }) {
         </TableHeader>
 
         <TableBody>
-          {results.map((result, index) => (
-            <TableRow key={index} index={index} isAnimated>
-              <TableCell index={index} totalRows={results.length} isFirstCol hasTopRadius align="center">
-                {result.rank}
-              </TableCell>
-              <TableCell index={index} totalRows={results.length}>
-                <CountryFlag nation={result.nation} />
-              </TableCell>
-              <TableCell index={index} totalRows={results.length}>
-                <span className="truncate w-full">
-                  {formatLastname(result.lastname)}
-                </span>
-              </TableCell>
-              <TableCell index={index} totalRows={results.length} isLastCol hasTopRadius align="right">
-                {result.time}
-              </TableCell>
-            </TableRow>
-          ))}
+          {visibleResults.map((result, index) => {
+            const showPinnedDivider = isLeaderPinnedWithGap && index === 1;
+
+            return (
+              <TableRow
+                key={`${result.bib}-${result.rank}`}
+                index={index}
+                isAnimated
+              >
+                <TableCell
+                  index={index}
+                  totalRows={visibleResults.length}
+                  isFirstCol
+                  hasTopRadius
+                  align="center"
+                  className={showPinnedDivider ? "!border-t-4 !border-theme-accent/70" : ""}
+                >
+                  {result.rank}
+                </TableCell>
+                <TableCell
+                  index={index}
+                  totalRows={visibleResults.length}
+                  className={showPinnedDivider ? "!border-t-4 !border-theme-accent/70" : ""}
+                >
+                  <CountryFlag nation={result.nation} />
+                </TableCell>
+                <TableCell
+                  index={index}
+                  totalRows={visibleResults.length}
+                  className={showPinnedDivider ? "!border-t-4 !border-theme-accent/70" : ""}
+                >
+                  <span className="truncate w-full">
+                    {formatLastname(result.lastname)}
+                  </span>
+                </TableCell>
+                <TableCell
+                  index={index}
+                  totalRows={visibleResults.length}
+                  isLastCol
+                  hasTopRadius
+                  isAccentMono
+                  align="right"
+                  className={showPinnedDivider ? "!border-t-4 !border-theme-accent/70" : ""}
+                >
+                  {result.time}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

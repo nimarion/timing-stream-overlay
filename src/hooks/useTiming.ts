@@ -2,10 +2,19 @@ import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { Result, Startlist, AthleteProfile, WebSocketMessageSchema } from "@/types";
 import { isDemo } from "@/utils";
-import { useDemoResults, useDemoStartlist, useDemoUpcomingStartlists, useDemoLowerThird } from "./useDemoData";
+import {
+  useDemoTiming,
+  useDemoResults,
+  useDemoStartlist,
+  useDemoUpcomingStartlists,
+  useDemoLowerThird,
+} from "./useDemoData";
 
 export function useTimingWebSocket() {
-  const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : new URLSearchParams();
+  const searchParams =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : new URLSearchParams();
   const websocketUrl = searchParams.get("ws") || "ws://localhost:8080";
   const { lastJsonMessage, readyState } = useWebSocket(websocketUrl, {
     shouldReconnect: () => true,
@@ -14,6 +23,43 @@ export function useTimingWebSocket() {
   const isConnected = readyState === ReadyState.OPEN;
 
   return { lastJsonMessage, isConnected, demoMode };
+}
+
+export function useLiveTiming() {
+  const { lastJsonMessage, isConnected, demoMode } = useTimingWebSocket();
+  const [wind, setWind] = useState<number | null>(null);
+  const [time, setTime] = useState<string | null>("0.0");
+
+  useEffect(() => {
+    if (!lastJsonMessage) return;
+
+    const parsed = WebSocketMessageSchema.safeParse(lastJsonMessage);
+    if (!parsed.success) {
+      console.warn("Invalid WebSocket message:", parsed.error);
+      return;
+    }
+
+    const message = parsed.data;
+    if (message.type === "wind") {
+      if (message.wind === null || Number.isNaN(message.wind)) {
+        setWind(null);
+      } else {
+        setWind(Number(message.wind.toFixed(1)));
+      }
+    } else if (message.type === "runningTime") {
+      const trimmedTime = message.time.trim();
+      if (trimmedTime === "0.0" || trimmedTime === "0.00") {
+        setWind(null);
+      }
+      setTime(trimmedTime);
+    } else if (message.type === "raceStarted") {
+      setWind(null);
+    }
+  }, [lastJsonMessage]);
+
+  useDemoTiming(demoMode, setTime, setWind);
+
+  return { time, wind, isConnected, demoMode };
 }
 
 export function useLiveLowerThird() {
@@ -46,13 +92,13 @@ export function useLiveResults(maxDemoResults?: number) {
 
   useEffect(() => {
     if (!lastJsonMessage) return;
-    
+
     const parsed = WebSocketMessageSchema.safeParse(lastJsonMessage);
     if (!parsed.success) {
       console.warn("Invalid WebSocket message:", parsed.error);
       return;
     }
-    
+
     const message = parsed.data;
     if (message.type === "results") {
       setResults(message.results);
@@ -96,7 +142,7 @@ export function useLiveUpcoming() {
 
   useEffect(() => {
     if (!lastJsonMessage) return;
-    
+
     const parsed = WebSocketMessageSchema.safeParse(lastJsonMessage);
     if (!parsed.success) {
       console.warn("Invalid WebSocket message:", parsed.error);
