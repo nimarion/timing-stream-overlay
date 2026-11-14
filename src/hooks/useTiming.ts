@@ -89,6 +89,9 @@ export function useLiveLowerThird() {
 export function useLiveResults(maxDemoResults?: number) {
   const { lastJsonMessage, isConnected, demoMode } = useTimingWebSocket();
   const [results, setResults] = useState<Result[]>([]);
+  const [title, setTitle] = useState<string | null>(null);
+  const [distance, setDistance] = useState<number | null>(null);
+  const [wind, setWind] = useState<number | null>(null);
 
   useEffect(() => {
     if (!lastJsonMessage) return;
@@ -102,14 +105,25 @@ export function useLiveResults(maxDemoResults?: number) {
     const message = parsed.data;
     if (message.type === "results") {
       setResults(message.results);
+      setTitle(message.title ?? null);
+      setDistance(message.distance ?? null);
+    } else if (message.type === "wind") {
+      if (message.wind === null || Number.isNaN(message.wind)) {
+        setWind(null);
+      } else {
+        setWind(Number(message.wind.toFixed(1)));
+      }
     } else if (message.type === "raceStarted") {
       setResults([]);
+      setTitle(null);
+      setDistance(null);
+      setWind(null);
     }
   }, [lastJsonMessage]);
 
-  useDemoResults(demoMode, setResults, maxDemoResults);
+  useDemoResults(demoMode, setResults, maxDemoResults, setTitle, setWind);
 
-  return { results, isConnected, demoMode };
+  return { results, title, distance, wind, isConnected, demoMode };
 }
 
 export function useLiveStartlist() {

@@ -1,20 +1,42 @@
 import { useEffect, useState } from "react";
 import { Result } from "@/types";
 import CountryFlag from "./CountryFlag";
+import WindIcon from "./WindIcon";
 import { formatLastname } from "@/utils";
+import { parseNationAndClub } from "@/utils/country";
+import { getOverlayLabels } from "@/utils/i18n";
 import {
   TableContainer,
+  TableCard,
+  TableCaption,
+  HeaderPill,
   Table,
-  TableHeader,
-  TableHeaderCell,
   TableBody,
   TableRow,
   TableCell,
+  RankBadge,
 } from "./ui/Table";
 
 const PAGE_ROTATION_MS = 5000;
 
-export default function ResultsTable({ results }: { results: Result[] }) {
+function formatWindPill(wind: number): string {
+  const rounded = Number(wind.toFixed(1));
+  if (rounded === 0) return "+0.0 m/s";
+  return `${rounded > 0 ? `+${rounded.toFixed(1)}` : rounded.toFixed(1)} m/s`;
+}
+
+export default function ResultsTable({
+  results,
+  title,
+  wind,
+  isExiting = false,
+}: {
+  results: Result[];
+  title?: string | null;
+  wind?: number | null;
+  isExiting?: boolean;
+}) {
+  const labels = getOverlayLabels();
   const totalPages =
     results.length <= 8 ? 1 : 1 + Math.ceil((results.length - 8) / 7);
   const [page, setPage] = useState(0);
@@ -43,69 +65,87 @@ export default function ResultsTable({ results }: { results: Result[] }) {
           ];
 
   const isLeaderPinnedWithGap = results.length > 8 && activePage > 0;
+  const showCaption = Boolean(title || wind !== null && wind !== undefined || totalPages > 1);
 
   return (
-    <TableContainer className="justify-end antialiased">
-      <Table className="rounded-md">
-        <TableHeader className="sticky top-0">
-          <TableHeaderCell className="rounded-tl-md w-12 sm:w-16 md:w-20">Rang</TableHeaderCell>
-          <TableHeaderCell className="w-12 sm:w-16 md:w-20">Nation</TableHeaderCell>
-          <TableHeaderCell>Name</TableHeaderCell>
-          <TableHeaderCell className="rounded-tr-md text-right w-32 sm:w-48 md:w-56">Ergebnis</TableHeaderCell>
-        </TableHeader>
+    <TableContainer>
+      <TableCard isExiting={isExiting} batchKey={`${title ?? "results"}-${activePage}`}>
+        {showCaption && (
+          <TableCaption
+            progressDurationMs={totalPages > 1 ? PAGE_ROTATION_MS : undefined}
+            progressKey={activePage}
+            rightContent={
+              wind !== null && wind !== undefined ? (
+                <HeaderPill variant={wind > 2.0 ? "illegal" : "legal"}>
+                  <WindIcon className="w-3.5 h-3.5" />
+                  <span>{formatWindPill(wind)}</span>
+                </HeaderPill>
+              ) : undefined
+            }
+          >
+            {title || labels.resultsTitle}
+          </TableCaption>
+        )}
 
-        <TableBody>
-          {visibleResults.map((result, index) => {
-            const showPinnedDivider = isLeaderPinnedWithGap && index === 1;
+        <Table>
+          <colgroup>
+            <col className="w-16 sm:w-20 md:w-24" />
+            <col className="w-16 sm:w-20 md:w-24" />
+            <col />
+            <col className="w-32 sm:w-44 md:w-52" />
+          </colgroup>
 
-            return (
-              <TableRow
-                key={`${result.bib}-${result.rank}`}
-                index={index}
-                isAnimated
-              >
-                <TableCell
+          <TableBody>
+            {visibleResults.map((result, index) => {
+              const isPinnedLeader = index === 0 && totalPages > 1;
+              const showPinnedDivider = isLeaderPinnedWithGap && index === 1;
+              const { club } = parseNationAndClub(result.nation);
+
+              return (
+                <TableRow
+                  key={
+                    isPinnedLeader
+                      ? `leader-${result.bib}`
+                      : `p${activePage}-${result.bib}-${result.rank}`
+                  }
                   index={index}
-                  totalRows={visibleResults.length}
-                  isFirstCol
-                  hasTopRadius
-                  align="center"
-                  className={showPinnedDivider ? "!border-t-4 !border-theme-accent/70" : ""}
+                  staggerIndex={isLeaderPinnedWithGap ? index - 1 : index}
+                  isPinned={isPinnedLeader && activePage > 0}
+                  hasDividerTop={showPinnedDivider}
+                  isAnimated
                 >
-                  {result.rank}
-                </TableCell>
-                <TableCell
-                  index={index}
-                  totalRows={visibleResults.length}
-                  className={showPinnedDivider ? "!border-t-4 !border-theme-accent/70" : ""}
-                >
-                  <CountryFlag nation={result.nation} />
-                </TableCell>
-                <TableCell
-                  index={index}
-                  totalRows={visibleResults.length}
-                  className={showPinnedDivider ? "!border-t-4 !border-theme-accent/70" : ""}
-                >
-                  <span className="truncate w-full">
-                    {formatLastname(result.lastname)}
-                  </span>
-                </TableCell>
-                <TableCell
-                  index={index}
-                  totalRows={visibleResults.length}
-                  isLastCol
-                  hasTopRadius
-                  isAccentMono
-                  align="right"
-                  className={showPinnedDivider ? "!border-t-4 !border-theme-accent/70" : ""}
-                >
-                  {result.time}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+                  <TableCell align="center">
+                    <RankBadge rank={result.rank} />
+                  </TableCell>
+                  <TableCell>
+                    <CountryFlag nation={result.nation} />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-baseline gap-2.5 truncate w-full min-w-0">
+                      {result.firstname && (
+                        <span className="font-normal opacity-80 shrink-0">
+                          {result.firstname}
+                        </span>
+                      )}
+                      <span className="font-bold tracking-wide truncate">
+                        {formatLastname(result.lastname)}
+                      </span>
+                      {club && (
+                        <span className="hidden sm:inline text-theme-secondary font-normal text-[0.6em] truncate shrink">
+                          {club}
+                        </span>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell align="right" isAccentMono>
+                    {result.time}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableCard>
     </TableContainer>
   );
 }

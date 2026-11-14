@@ -48,28 +48,41 @@ export function useDemoTiming(
 export function useDemoResults(
   isDemo: boolean,
   setResults: React.Dispatch<React.SetStateAction<Result[]>>,
-  maxResults: number = 12
+  maxResults: number = 12,
+  setTitle?: React.Dispatch<React.SetStateAction<string | null>>,
+  setWind?: React.Dispatch<React.SetStateAction<number | null>>
 ) {
   const countRef = useRef(0);
 
   useEffect(() => {
     if (isDemo) {
+      setTitle?.("Men's 100m Final");
+      setWind?.(1.2);
+
       const interval = setInterval(() => {
         countRef.current += 1;
 
-        setResults((prevResults) => [
-          ...prevResults,
-          {
-            bib: (prevResults.length + 1).toString(),
-            firstname: getRandomFirstName(),
-            lastname: getRandomLastName(),
-            nation: getRandomNation(),
-            rank: (prevResults.length + 1).toString(),
-            result: (Math.random() * 10).toFixed(2),
-            time: (Math.random() * 10).toFixed(2),
-            reactionTime: Math.random() * 0.2,
-          },
-        ]);
+        setResults((prevResults) => {
+          const rankNum = prevResults.length + 1;
+          const prevTime =
+            prevResults.length > 0 ? parseFloat(prevResults[prevResults.length - 1].time) : 9.79;
+          const nextTime = (prevTime + 0.04 + Math.random() * 0.09).toFixed(2);
+          const reaction = Number((0.108 + Math.random() * 0.095).toFixed(3));
+
+          return [
+            ...prevResults,
+            {
+              bib: (100 + rankNum).toString(),
+              firstname: getRandomFirstName(),
+              lastname: getRandomLastName(),
+              nation: getRandomNation(),
+              rank: rankNum.toString(),
+              result: nextTime,
+              time: nextTime,
+              reactionTime: reaction,
+            },
+          ];
+        });
 
         if (countRef.current >= maxResults) {
           clearInterval(interval);
@@ -81,7 +94,7 @@ export function useDemoResults(
         countRef.current = 0;
       };
     }
-  }, [isDemo, setResults, maxResults]);
+  }, [isDemo, setResults, maxResults, setTitle, setWind]);
 }
 
 export function useDemoLowerThird(

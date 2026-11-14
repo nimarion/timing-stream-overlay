@@ -34,7 +34,7 @@ export default function LowerThird({ athlete }: { athlete: AthleteProfile | null
   const subtitle = displayedAthlete.subtitle || club;
 
   return (
-    <div className="flex w-full h-full justify-start items-end pb-8 pl-8 antialiased">
+    <div className="flex w-full h-full justify-start items-end antialiased">
       <div
         className={`flex overflow-hidden rounded-md shadow-2xl border-l-8 bg-theme-panel border-theme-accent ${
           isAnimatingOut ? "slideOutLeft" : "slideInLeft"

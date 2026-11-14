@@ -5,11 +5,11 @@
 :root, [data-theme="rr2"] {
     --theme-accent: #dc2626;
     --theme-accent-glow: rgba(220, 38, 38, 0.35);
-    --theme-panel-bg: rgba(0, 0, 0, 0.85);
-    --theme-row-bg: linear-gradient(135deg, rgba(25,25,25,0.95), rgba(35,35,35,0.95));
+    --theme-panel-bg: rgba(10, 10, 12, 0.88);
+    --theme-row-bg: linear-gradient(135deg, rgba(24, 24, 27, 0.94), rgba(36, 36, 40, 0.94));
     --theme-text-primary: #FFFFFF;
-    --theme-text-secondary: #dddddd;
-    --theme-text-muted: rgba(255, 255, 255, 0.4);
+    --theme-text-secondary: #d4d4d8;
+    --theme-text-muted: rgba(255, 255, 255, 0.45);
     --theme-row-border: rgba(255, 255, 255, 0.08);
     --theme-font-display: 'Roboto', Arial, sans-serif;
     --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
@@ -19,11 +19,11 @@
     --theme-accent: #2563eb;
     --theme-accent-glow: rgba(37, 99, 235, 0.35);
     --theme-panel-bg: rgba(255, 255, 255, 0.95);
-    --theme-row-bg: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(243,244,246,0.95));
-    --theme-text-primary: #1f2937;
+    --theme-row-bg: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(243,244,246,0.96));
+    --theme-text-primary: #111827;
     --theme-text-secondary: #4b5563;
-    --theme-text-muted: rgba(31, 41, 55, 0.4);
-    --theme-row-border: rgba(0, 0, 0, 0.1);
+    --theme-text-muted: rgba(31, 41, 55, 0.45);
+    --theme-row-border: rgba(0, 0, 0, 0.09);
     --theme-font-display: 'Roboto', Arial, sans-serif;
     --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
@@ -31,12 +31,12 @@
 [data-theme="olympics"] {
     --theme-accent: #d6a117;
     --theme-accent-glow: rgba(214, 161, 23, 0.35);
-    --theme-panel-bg: rgba(0, 26, 87, 0.9);
+    --theme-panel-bg: rgba(0, 26, 87, 0.92);
     --theme-row-bg: linear-gradient(135deg, rgba(0, 26, 87, 0.95), rgba(0, 15, 50, 0.95));
     --theme-text-primary: #FFFFFF;
     --theme-text-secondary: #cbd5e1;
-    --theme-text-muted: rgba(255, 255, 255, 0.4);
-    --theme-row-border: rgba(255, 255, 255, 0.15);
+    --theme-text-muted: rgba(255, 255, 255, 0.45);
+    --theme-row-border: rgba(255, 255, 255, 0.14);
     --theme-font-display: 'Roboto', Arial, sans-serif;
     --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
@@ -44,11 +44,11 @@
 [data-theme="cyberpunk"] {
     --theme-accent: #06b6d4;
     --theme-accent-glow: rgba(6, 182, 212, 0.35);
-    --theme-panel-bg: rgba(15, 23, 42, 0.85);
+    --theme-panel-bg: rgba(15, 23, 42, 0.9);
     --theme-row-bg: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
     --theme-text-primary: #f8fafc;
     --theme-text-secondary: #94a3b8;
-    --theme-text-muted: rgba(248, 250, 252, 0.4);
+    --theme-text-muted: rgba(248, 250, 252, 0.45);
     --theme-row-border: rgba(255, 255, 255, 0.1);
     --theme-font-display: 'Roboto', Arial, sans-serif;
     --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
@@ -57,12 +57,12 @@
 [data-theme="broadcast"] {
     --theme-accent: #fbbf24;
     --theme-accent-glow: rgba(251, 191, 36, 0.35);
-    --theme-panel-bg: rgba(0, 0, 0, 0.95);
-    --theme-row-bg: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(5, 5, 5, 0.95));
+    --theme-panel-bg: rgba(8, 8, 10, 0.95);
+    --theme-row-bg: linear-gradient(135deg, rgba(22, 22, 24, 0.95), rgba(8, 8, 10, 0.95));
     --theme-text-primary: #ffffff;
     --theme-text-secondary: #d4d4d8;
-    --theme-text-muted: rgba(255, 255, 255, 0.4);
-    --theme-row-border: rgba(255, 255, 255, 0.15);
+    --theme-text-muted: rgba(255, 255, 255, 0.45);
+    --theme-row-border: rgba(255, 255, 255, 0.14);
     --theme-font-display: 'Roboto', Arial, sans-serif;
     --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
@@ -70,12 +70,12 @@
 [data-theme="emerald"] {
     --theme-accent: #34d399;
     --theme-accent-glow: rgba(52, 211, 153, 0.35);
-    --theme-panel-bg: rgba(2, 44, 34, 0.9);
+    --theme-panel-bg: rgba(2, 44, 34, 0.92);
     --theme-row-bg: linear-gradient(135deg, rgba(6, 78, 59, 0.95), rgba(2, 44, 34, 0.95));
     --theme-text-primary: #ecfdf5;
     --theme-text-secondary: #a7f3d0;
-    --theme-text-muted: rgba(236, 253, 245, 0.4);
-    --theme-row-border: rgba(255, 255, 255, 0.08);
+    --theme-text-muted: rgba(236, 253, 245, 0.45);
+    --theme-row-border: rgba(255, 255, 255, 0.1);
     --theme-font-display: 'Roboto', Arial, sans-serif;
     --theme-font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
@@ -117,70 +117,101 @@ body::-webkit-scrollbar {
     place-items: end;
 }
 
-.cssanimation, .cssanimation span {
-    animation-duration: 800ms;
-    animation-fill-mode: both;
+/* ── Broadcast Table & Card Motion ───────────────────────────────── */
+
+.broadcast-card-in {
+    animation: broadcastCardIn 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    will-change: transform, opacity;
 }
 
-.cssanimation span { display: inline-block }
-
-.fadeInBottom { animation-name: fadeInBottomRow }
-.fadeInBottom td > div {
-    animation-name: fadeInBottomCellWrapper;
-    animation-duration: 800ms;
-    animation-fill-mode: both;
+.broadcast-card-out {
+    animation: broadcastCardOut 360ms cubic-bezier(0.7, 0, 0.84, 0) both;
+    will-change: transform, opacity;
 }
 
-@keyframes fadeInBottomRow {
-    from {
-        transform: translateY(20px);
-    }
-    to {
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInBottomCellWrapper {
+@keyframes broadcastCardIn {
     from {
         opacity: 0;
-        max-height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
+        transform: translate3d(0, 24px, 0) scale(0.985);
     }
     to {
         opacity: 1;
-        max-height: 80px;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
+        transform: translate3d(0, 0, 0) scale(1);
     }
 }
 
+@keyframes broadcastCardOut {
+    from {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0) scale(0.985);
+    }
+}
+
+.broadcast-row-in > td > div {
+    animation: broadcastRowCellIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--row-delay, 0ms);
+    will-change: transform, opacity;
+}
+
+@keyframes broadcastRowCellIn {
+    from {
+        opacity: 0;
+        transform: translate3d(-14px, 8px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes broadcastPageProgress {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+.broadcast-page-progress {
+    transform-origin: left center;
+    animation-name: broadcastPageProgress;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+/* ── Lower Third Motion ──────────────────────────────────────────── */
+
 .slideInLeft {
-    animation: slideInLeftAnim 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation: slideInLeftAnim 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .slideOutLeft {
-    animation: slideOutLeftAnim 500ms cubic-bezier(0.8, 0.2, 1, 0.2) both;
+    animation: slideOutLeftAnim 450ms cubic-bezier(0.7, 0, 0.84, 0) both;
 }
 
 @keyframes slideInLeftAnim {
     from {
         opacity: 0;
-        transform: translateX(-50px);
+        transform: translate3d(-50px, 0, 0);
     }
     to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
     }
 }
 
 @keyframes slideOutLeftAnim {
     from {
         opacity: 1;
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
     }
     to {
         opacity: 0;
-        transform: translateX(-50px);
+        transform: translate3d(-50px, 0, 0);
     }
 }

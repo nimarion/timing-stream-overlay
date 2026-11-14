@@ -1,19 +1,25 @@
-import React from "react";
+import React, { createContext, useContext, useEffect, useRef } from "react";
 import { cn } from "@/utils";
 
-export function TableContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={cn("w-full h-full flex flex-col font-display text-2xl sm:text-3xl md:text-4xl", className)}>
-      {children}
-    </div>
-  );
+interface TableMotionContextValue {
+  getRowDelayMs: (staggerIndex: number) => number;
 }
 
-export function TableCaption({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+const TableMotionContext = createContext<TableMotionContextValue>({
+  getRowDelayMs: (staggerIndex) => staggerIndex * 45,
+});
+
+export function TableContainer({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <div
       className={cn(
-        "px-4 py-3 font-bold text-left bg-theme-panel text-theme-accent text-[1.05em] tracking-[0.5px] shadow-theme-panel backdrop-blur-md rounded-t-md truncate w-full flex items-center justify-between gap-4",
+        "w-full max-w-5xl mx-auto h-full flex flex-col justify-end font-display text-2xl sm:text-3xl md:text-4xl antialiased",
         className
       )}
     >
@@ -22,51 +28,169 @@ export function TableCaption({ children, className = "" }: { children: React.Rea
   );
 }
 
-export function Table({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <table className={cn("table-fixed w-full", className)}>{children}</table>;
-}
+export function TableCard({
+  children,
+  isExiting = false,
+  batchKey = "default",
+  className = "",
+}: {
+  children: React.ReactNode;
+  isExiting?: boolean;
+  batchKey?: string | number;
+  className?: string;
+}) {
+  const batchStartRef = useRef<number>(performance.now());
+  const prevBatchKeyRef = useRef<string | number>(batchKey);
 
-export function TableHeader({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  if (prevBatchKeyRef.current !== batchKey) {
+    prevBatchKeyRef.current = batchKey;
+    batchStartRef.current = performance.now();
+  }
+
+  useEffect(() => {
+    batchStartRef.current = performance.now();
+  }, [batchKey]);
+
+  const motionValue: TableMotionContextValue = {
+    getRowDelayMs: (staggerIndex: number) => {
+      const elapsed = performance.now() - batchStartRef.current;
+      // Cascade rows during initial mount or page transition; animate immediately on live incremental arrivals
+      if (elapsed <= 180) {
+        return Math.max(0, staggerIndex) * 45;
+      }
+      return 0;
+    },
+  };
+
   return (
-    <thead className={cn("collapse bg-theme-panel", className)}>
-      <tr className="text-left">{children}</tr>
-    </thead>
+    <TableMotionContext.Provider value={motionValue}>
+      <div
+        className={cn(
+          "w-full rounded-lg overflow-hidden shadow-2xl ring-1 ring-white/10 backdrop-blur-md",
+          isExiting ? "broadcast-card-out" : "broadcast-card-in",
+          className
+        )}
+      >
+        {children}
+      </div>
+    </TableMotionContext.Provider>
   );
 }
 
-export function TableHeaderCell({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+export function TableCaption({
+  children,
+  rightContent,
+  progressDurationMs,
+  progressKey,
+  className = "",
+}: {
+  children: React.ReactNode;
+  rightContent?: React.ReactNode;
+  progressDurationMs?: number;
+  progressKey?: string | number;
+  className?: string;
+}) {
   return (
-    <th
+    <div
       className={cn(
-        "px-4 py-3.5 text-theme-secondary font-medium uppercase tracking-[1px] text-[0.65em]",
+        "relative px-4 py-2.5 sm:px-6 sm:py-3.5 bg-theme-panel border-b border-theme-border border-l-[6px] border-l-theme-accent text-theme-primary font-bold tracking-[0.4px] w-full flex items-center justify-between gap-4",
+        className
+      )}
+    >
+      <div className="truncate min-w-0 text-[0.95em] leading-tight">{children}</div>
+      {rightContent && (
+        <div className="flex items-center gap-2.5 shrink-0">{rightContent}</div>
+      )}
+      {progressDurationMs && progressDurationMs > 0 ? (
+        <div className="absolute left-0 right-0 bottom-0 h-[2px] bg-white/10 overflow-hidden">
+          <div
+            key={progressKey}
+            className="h-full w-full bg-theme-accent broadcast-page-progress"
+            style={{ animationDuration: `${progressDurationMs}ms` }}
+          />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export function HeaderPill({
+  children,
+  variant = "neutral",
+  className = "",
+}: {
+  children: React.ReactNode;
+  variant?: "neutral" | "accent" | "legal" | "illegal";
+  className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded font-mono text-[0.52em] font-bold tracking-wider uppercase tabular-nums leading-none",
+        variant === "neutral" && "bg-white/10 text-theme-secondary border border-theme-border",
+        variant === "accent" && "bg-theme-accent text-white shadow-theme-glow",
+        variant === "legal" && "bg-emerald-500/90 text-white",
+        variant === "illegal" && "bg-red-600 text-white shadow-theme-glow",
         className
       )}
     >
       {children}
-    </th>
+    </span>
+  );
+}
+
+export function Table({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <table className={cn("table-fixed w-full border-collapse", className)}>
+      {children}
+    </table>
   );
 }
 
 export function TableBody({ children }: { children: React.ReactNode }) {
-  return <tbody className="font-bold">{children}</tbody>;
+  return <tbody>{children}</tbody>;
 }
 
 export function TableRow({
   children,
   index,
-  isAnimated = false,
+  staggerIndex,
+  isAnimated = true,
+  isPinned = false,
+  hasDividerTop = false,
   className = "",
 }: {
   children: React.ReactNode;
   index: number;
+  staggerIndex?: number;
   isAnimated?: boolean;
+  isPinned?: boolean;
+  hasDividerTop?: boolean;
   className?: string;
 }) {
+  const { getRowDelayMs } = useContext(TableMotionContext);
+  const delayMs = isPinned
+    ? 0
+    : getRowDelayMs(staggerIndex !== undefined ? staggerIndex : index);
+
   return (
     <tr
+      style={
+        isAnimated && !isPinned
+          ? ({ "--row-delay": `${delayMs}ms` } as React.CSSProperties)
+          : undefined
+      }
       className={cn(
-        "bg-theme-row text-theme-primary",
-        isAnimated && index !== 0 && "cssanimation sequence fadeInBottom",
+        "bg-theme-row text-theme-primary transition-colors duration-200",
+        index > 0 && !hasDividerTop && "border-t border-theme-border",
+        hasDividerTop && "border-t-[3px] border-theme-accent/75",
+        isAnimated && !isPinned && "broadcast-row-in",
         className
       )}
     >
@@ -77,31 +201,18 @@ export function TableRow({
 
 export function TableCell({
   children,
-  index,
-  totalRows,
-  isFirstCol = false,
-  isLastCol = false,
-  hasTopRadius = false,
   isAccentMono = false,
   align = "left",
   className = "",
   innerClassName = "",
 }: {
   children: React.ReactNode;
-  index: number;
-  totalRows: number;
-  isFirstCol?: boolean;
-  isLastCol?: boolean;
-  hasTopRadius?: boolean;
   isAccentMono?: boolean;
   align?: "left" | "center" | "right";
   className?: string;
   innerClassName?: string;
 }) {
-  const isFirstRow = index === 0;
-  const isLastRow = index === totalRows - 1;
-
-  const defaultInnerClass = "px-2 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4";
+  const defaultInnerClass = "px-2 py-2 sm:px-4 sm:py-2.5 md:px-6 md:py-3.5";
 
   return (
     <td
@@ -109,12 +220,8 @@ export function TableCell({
         "p-0",
         align === "center" && "text-center",
         align === "right" && "text-right",
-        isAccentMono && "text-theme-accent font-mono font-bold tracking-[0.5px] tabular-nums",
-        !isFirstRow && "border-t-2 border-theme-border",
-        isFirstRow && hasTopRadius && isFirstCol && "rounded-tl-md",
-        isFirstRow && hasTopRadius && isLastCol && "rounded-tr-md",
-        isLastRow && isFirstCol && "rounded-bl-md",
-        isLastRow && isLastCol && "rounded-br-md",
+        isAccentMono &&
+          "text-theme-accent font-mono font-bold tracking-[0.5px] tabular-nums",
         className
       )}
     >
@@ -130,5 +237,36 @@ export function TableCell({
         {children}
       </div>
     </td>
+  );
+}
+
+export function RankBadge({ rank }: { rank: string }) {
+  const trimmed = rank.trim();
+  const medalStyle =
+    trimmed === "1"
+      ? "bg-amber-400 text-neutral-950 shadow-[0_0_12px_rgba(251,191,36,0.45)] border-amber-300"
+      : trimmed === "2"
+        ? "bg-slate-300 text-neutral-950 border-slate-200"
+        : trimmed === "3"
+          ? "bg-amber-700 text-amber-50 border-amber-600"
+          : "bg-theme-panel/70 text-theme-primary border-theme-border";
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center justify-center min-w-[1.85em] h-[1.55em] px-2 rounded-md border font-mono font-bold text-[0.75em] leading-none tabular-nums",
+        medalStyle
+      )}
+    >
+      {trimmed}
+    </span>
+  );
+}
+
+export function LaneBadge({ lane }: { lane: string }) {
+  return (
+    <span className="inline-flex items-center justify-center min-w-[1.85em] h-[1.55em] px-2 rounded-md bg-theme-panel/70 text-theme-primary border border-theme-border font-mono font-bold text-[0.75em] leading-none tabular-nums">
+      {lane}
+    </span>
   );
 }
